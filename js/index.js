@@ -18,8 +18,8 @@ window.addEventListener("load", function () {
 
     var t = new SVG(document.querySelector(".graph")).size("100%", "100%")
       , winSize = {
-            w: window.innerWidth
-          , h: window.innerHeight
+            w: window.innerWidth / 2
+          , h: window.innerHeight /2
         }
       , elements = t.group().id("elements")
       , shapes = [

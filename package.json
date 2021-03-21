@@ -45,5 +45,9 @@
     "ex_url": "https://ionicabizau.github.io/tangram/",
     "title": "Tangram Puzzle",
     "description": "Check out [my blog post about this](http://ionicabizau.net/blog/31-the-amazing-tangram-square)."
+  },
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "firebase": "^8.3.1"
   }
 }

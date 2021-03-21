@@ -14,13 +14,53 @@
         <script src="js/css.rotate.js"></script>
         <script src="js/crossy.js"></script>
         <script src="js/index.js"></script>
+        <script src="firebase_config.js"></script>
     </head>
     <body>
-        <div class="title">
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="/__/firebase/8.3.1/firebase-app.js"></script>
+
+        <!-- Add Firebase products that you want to use -->
+        <script src="/__/firebase/8.3.1/firebase-auth.js"></script>
+        <script src="/__/firebase/8.3.1/firebase-firestore.js"></script>
+
+        <!-- Initialize Firebase -->
+        <script src="/__/firebase/init.js"></script>
+        <!-- <div class="title">
             <h1 class="text-center">Tangram</h1>
+        </div> -->
+        <div class="left">
+            <button class="button next" onclick="">Next</button>
+            <img class="image" src="assets_temp/AppleTree.GIF"></img>
         </div>
-        <div class="graph"></div>
-        <div class="sidebar">
+        <div class="right"> 
+            <button class="button submit" onclick="download()">Submit</button>
+            <div class="graph" id="graph"></div>
+        </div>
+        
+        
+        <script>
+            function GetElementInsideContainer(containerID, childID) {
+                var elm = document.getElementById(childID);
+                var parent = elm ? elm.parentNode : {};
+                return (parent.id && parent.id === containerID) ? elm : {};
+            }
+           
+            function download(){
+                var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000").outerHTML;
+              
+                var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+                var svgUrl = URL.createObjectURL(svgBlob);
+                var downloadLink = document.createElement("a");
+                downloadLink.href = svgUrl;
+                downloadLink.download = "test.svg";
+                // document.body.appendChild(downloadLink);
+                downloadLink.click();
+                // document.body.removeChild(downloadLink);
+            }
+           
+        </script>
+        <!-- <div class="sidebar">
             <div class="sidebar-item" onclick="showTutorial()">
                 <span class="octicon octicon-question"></span>
             </div>
@@ -34,6 +74,6 @@
                     <span class="octicon octicon-light-bulb"></span>
                 </a>
             </div>
-        </div>
+        </div> -->
     </body>
 </html>
