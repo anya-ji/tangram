@@ -14,9 +14,10 @@
         <script src="js/css.rotate.js"></script>
         <script src="js/crossy.js"></script>
         <script src="js/index.js"></script>
-        <script src="firebase_config.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>  
+        <!-- <script type="text/javascript" src="js/db.js"></script> -->
+        <!-- <script src="firebase_config.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>   -->
     </head>
     <body>
         <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -25,22 +26,21 @@
         <!-- Add Firebase products that you want to use -->
         <script src="/__/firebase/8.3.1/firebase-auth.js"></script>
         <script src="/__/firebase/8.3.1/firebase-firestore.js"></script>
+        <script src="/__/firebase/8.3.1/firebase-storage.js"></script>
 
-        <!-- Initialize Firebase -->
-        <script src="/__/firebase/init.js"></script>
         <!-- <div class="title">
             <h1 class="text-center">Tangram</h1>
         </div> -->
         <div class="left">
-            <button class="button next" onclick="">Next</button>
+            <button id="next" class="button next">Next</button>
             <img class="image" src="assets_temp/AppleTree.GIF"></img>
         </div>
         <div class="right"> 
-            <button class="button submit" onclick="download()">Submit</button>
+            <button id="submit" class="button submit">Submit</button>
             <div class="graph" id="graph"></div>
         </div>
         
-        
+        <!-- Download SVG
         <script>
             function GetElementInsideContainer(containerID, childID) {
                 var elm = document.getElementById(childID);
@@ -55,13 +55,81 @@
                 var svgUrl = URL.createObjectURL(svgBlob);
                 var downloadLink = document.createElement("a");
                 downloadLink.href = svgUrl;
-                downloadLink.download = "test.svg";
-                // document.body.appendChild(downloadLink);
-                downloadLink.click();
-                // document.body.removeChild(downloadLink);
+                // downloadLink.download = "test.svg";
+                // // document.body.appendChild(downloadLink);
+                // downloadLink.click();
+                // // document.body.removeChild(downloadLink);
+                return downloadLink
             }
            
+        </script> -->
+
+        <!-- Firebase -->
+        <script>
+            var firebaseConfig = {
+                apiKey: "AIzaSyDVFNgeaaWeBSNdAXoieOHmeoEcMnST6Xc",
+                authDomain: "tangram-c997f.firebaseapp.com",
+                projectId: "tangram-c997f",
+                storageBucket: "tangram-c997f.appspot.com",
+                messagingSenderId: "828079104765",
+                appId: "1:828079104765:web:d8c5928395240394e0d494",
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            const storage = firebase.storage();
+            var storageRef = storage.ref();
+
+            //download SVG
+            function GetElementInsideContainer(containerID, childID) {
+                var elm = document.getElementById(childID);
+                var parent = elm ? elm.parentNode : {};
+                return (parent.id && parent.id === containerID) ? elm : {};
+            }
+           
+            function download(){
+                var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000").outerHTML;
+              
+                var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+                // var svgUrl = URL.createObjectURL(svgBlob);
+                // var downloadLink = document.createElement("a");
+                // downloadLink.href = svgUrl;
+                // downloadLink.download = "test.svg";
+                // // document.body.appendChild(downloadLink);
+                // downloadLink.click();
+                // // document.body.removeChild(downloadLink);
+                
+                return svgBlob
+            }
+
+            function submit() {
+                var blob = download()
+
+                var ref = storageRef.child('svgs/test.svg')
+
+                ref.put(blob)
+                    .then((snapshot) => {
+                        console.log('Uploaded a blob or file!');
+                        snapshot.ref.getDownloadURL().then((url) =>{
+                            db.collection("svgs")
+                            .add({
+                                name: "placeholder",
+                                link: url,
+                            })
+                            .then((docRef) => {
+                                console.log("Document written with ID: ", docRef.id);
+                            })
+                            .catch((error) => {
+                                console.error("Error adding document: ", error);
+                            });
+                        })
+                    
+                });
+
+                
+            }
+            document.getElementById("submit").addEventListener("click", submit());
         </script>
+  
         <!-- <div class="sidebar">
             <div class="sidebar-item" onclick="showTutorial()">
                 <span class="octicon octicon-question"></span>
