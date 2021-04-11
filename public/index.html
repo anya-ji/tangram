@@ -1,136 +1,147 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8">
-        <title>Tangram</title>
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/caiuss/1.0.2/caiuss.min.css" type="text/css" media="screen" charset="utf-8">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Tangram</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/caiuss/1.0.2/caiuss.min.css" type="text/css" media="screen" charset="utf-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" type="text/css" media="screen" charset="utf-8"> -->
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" type="text/css" media="screen" charset="utf-8"> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.0.2/svg.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-        <script src="js/svg.select.min.js"></script>
-        <script src="js/svg.draggy.js"></script>
-        <script src="js/css.rotate.js"></script>
-        <script src="js/crossy.js"></script>
-        <script src="js/index.js"></script>
-        <!-- <script type="text/javascript" src="js/db.js"></script> -->
-        <!-- <script src="firebase_config.js"></script> -->
-        <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <link
+      rel="stylesheet"
+      href="css/style.css"
+      type="text/css"
+      media="screen"
+      charset="utf-8"
+    />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" type="text/css" media="screen" charset="utf-8"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.0.2/svg.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="js/svg.select.min.js"></script>
+    <script src="js/svg.draggy.js"></script>
+    <script src="js/css.rotate.js"></script>
+    <script src="js/crossy.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/select.js"></script>
+    <!-- <script type="text/javascript" src="js/db.js"></script> -->
+    <!-- <script src="firebase_config.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>   -->
-    </head>
-    <body>
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="/__/firebase/8.3.1/firebase-app.js"></script>
+  </head>
+  <body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/8.3.1/firebase-app.js"></script>
 
-        <!-- Add Firebase products that you want to use -->
-        <script src="/__/firebase/8.3.1/firebase-auth.js"></script>
-        <script src="/__/firebase/8.3.1/firebase-firestore.js"></script>
-        <script src="/__/firebase/8.3.1/firebase-storage.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="/__/firebase/8.3.1/firebase-auth.js"></script>
+    <script src="/__/firebase/8.3.1/firebase-firestore.js"></script>
+    <script src="/__/firebase/8.3.1/firebase-storage.js"></script>
 
-        <!-- <div class="title">
+    <!-- <div class="title">
             <h1 class="text-center">Tangram</h1>
         </div> -->
-        <div class="left">
-            <button id="next" class="button next">Next</button>
-            <img class="image" src="assets_temp/AppleTree.GIF"></img>
-        </div>
-        <div class="right"> 
-            <button id="submit" class="button submit">Submit</button>
-            <div class="graph" id="graph"></div>
-        </div>
-        
-        <!-- Download SVG
-        <script>
-            function GetElementInsideContainer(containerID, childID) {
-                var elm = document.getElementById(childID);
-                var parent = elm ? elm.parentNode : {};
-                return (parent.id && parent.id === containerID) ? elm : {};
-            }
-           
-            function download(){
-                var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000").outerHTML;
-              
-                var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-                var svgUrl = URL.createObjectURL(svgBlob);
-                var downloadLink = document.createElement("a");
-                downloadLink.href = svgUrl;
-                // downloadLink.download = "test.svg";
-                // // document.body.appendChild(downloadLink);
-                // downloadLink.click();
-                // // document.body.removeChild(downloadLink);
-                return downloadLink
-            }
-           
-        </script> -->
+    <div class="left">
+      <object
+        class="image"
+        id="tangramObj"
+        data="assets_temp/Test.svg"
+        type="image/svg+xml"
+      ></object>
+    </div>
+    <div class="right">
+      <button id="next" class="button next">Next</button>
+      <div class="annotation">
+        <input
+          id="annotate"
+          class="textbox"
+          type="text"
+          onkeyup="stoppedTyping()"
+        />
+        <button id="submit" class="button" disabled>Submit</button>
+      </div>
+      <p id="output"></p>
+    </div>
 
-        <!-- Firebase -->
-        <script>
-            var firebaseConfig = {
-                apiKey: "AIzaSyDVFNgeaaWeBSNdAXoieOHmeoEcMnST6Xc",
-                authDomain: "tangram-c997f.firebaseapp.com",
-                projectId: "tangram-c997f",
-                storageBucket: "tangram-c997f.appspot.com",
-                messagingSenderId: "828079104765",
-                appId: "1:828079104765:web:d8c5928395240394e0d494",
-            };
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-            const storage = firebase.storage();
-            var storageRef = storage.ref();
+    <script>
+      function stoppedTyping() {
+        var text = document.getElementById("annotate");
+        var bt = document.getElementById("submit");
+        if (text.value.length === 0) {
+          console.log("true");
+          bt.disabled = true;
+          //   bt.style.backgroundColor = "#808080";
+        } else {
+          console.log("ff");
+          bt.disabled = false;
+          //   bt.style.backgroundColor = "#4caf50";
+        }
+      }
+    </script>
 
-            //download SVG
-            function GetElementInsideContainer(containerID, childID) {
-                var elm = document.getElementById(childID);
-                var parent = elm ? elm.parentNode : {};
-                return (parent.id && parent.id === containerID) ? elm : {};
-            }
-           
-            function download(){
-                var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000").outerHTML;
-              
-                var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-                // var svgUrl = URL.createObjectURL(svgBlob);
-                // var downloadLink = document.createElement("a");
-                // downloadLink.href = svgUrl;
-                // downloadLink.download = "test.svg";
-                // // document.body.appendChild(downloadLink);
-                // downloadLink.click();
-                // // document.body.removeChild(downloadLink);
-                
-                return svgBlob
-            }
+    <!-- Firebase -->
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyDVFNgeaaWeBSNdAXoieOHmeoEcMnST6Xc",
+        authDomain: "tangram-c997f.firebaseapp.com",
+        projectId: "tangram-c997f",
+        storageBucket: "tangram-c997f.appspot.com",
+        messagingSenderId: "828079104765",
+        appId: "1:828079104765:web:d8c5928395240394e0d494",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const storage = firebase.storage();
+      var storageRef = storage.ref();
 
-            function submit() {
-                var blob = download()
+      //download SVG
+      function GetElementInsideContainer(containerID, childID) {
+        var elm = document.getElementById(childID);
+        var parent = elm ? elm.parentNode : {};
+        return parent.id && parent.id === containerID ? elm : {};
+      }
 
-                var ref = storageRef.child('svgs/test.svg')
+      function download() {
+        var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000")
+          .outerHTML;
 
-                ref.put(blob)
-                    .then((snapshot) => {
-                        console.log('Uploaded a blob or file!');
-                        snapshot.ref.getDownloadURL().then((url) =>{
-                            db.collection("svgs")
-                            .add({
-                                name: "placeholder",
-                                link: url,
-                            })
-                            .then((docRef) => {
-                                console.log("Document written with ID: ", docRef.id);
-                            })
-                            .catch((error) => {
-                                console.error("Error adding document: ", error);
-                            });
-                        })
-                    
-                });
+        var svgBlob = new Blob([svgData], {
+          type: "image/svg+xml;charset=utf-8",
+        });
+        // var svgUrl = URL.createObjectURL(svgBlob);
+        // var downloadLink = document.createElement("a");
+        // downloadLink.href = svgUrl;
+        // downloadLink.download = "test.svg";
+        // // document.body.appendChild(downloadLink);
+        // downloadLink.click();
+        // // document.body.removeChild(downloadLink);
 
-                
-            }
-            document.getElementById("submit").addEventListener("click", submit());
-        </script>
-  
-        <!-- <div class="sidebar">
+        return svgBlob;
+      }
+
+      function submit() {
+        var blob = download();
+
+        var ref = storageRef.child("svgs/test.svg");
+
+        ref.put(blob).then((snapshot) => {
+          console.log("Uploaded a blob or file!");
+          snapshot.ref.getDownloadURL().then((url) => {
+            db.collection("svgs")
+              .add({
+                name: "placeholder",
+                link: url,
+              })
+              .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+          });
+        });
+      }
+      document.getElementById("submit").addEventListener("click", submit());
+    </script>
+
+    <!-- <div class="sidebar">
             <div class="sidebar-item" onclick="showTutorial()">
                 <span class="octicon octicon-question"></span>
             </div>
@@ -145,5 +156,5 @@
                 </a>
             </div>
         </div> -->
-    </body>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-.graph {
+/* .graph {
   z-index: 9;
   position: fixed;
   top: 0;
@@ -8,9 +8,9 @@
   border-width: 1vh;
   border-style: solid;
   border-color: rgb(0, 0, 0);
-}
+} */
 
-.title {
+/* .title {
   position: fixed;
   z-index: 10;
   pointer-events: none;
@@ -26,9 +26,9 @@
   display: inline;
   padding: 0px;
   padding-left: 20px;
-}
+} */
 
-polygon {
+/* polygon {
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -ms-transition: all 0.5s ease;
@@ -70,10 +70,10 @@ ul {
 
 .made-with-heart a:hover {
   text-decoration: underline;
-}
+} */
 
 .button {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -85,18 +85,31 @@ ul {
   cursor: pointer;
 }
 
+.button:disabled {
+  background-color: #808080;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: default;
+}
+/* 
 .submit {
   z-index: 10;
   position: absolute;
   left: 75%;
   top: 90%;
-}
+} */
 
 .next {
   z-index: 10;
-  position: relative;
-  left: 80%;
-  top: 90%;
+  position: absolute;
+  left: 65%;
+  top: 80%;
 }
 
 .left {
@@ -106,24 +119,34 @@ ul {
   right: 50%;
   bottom: 0;
   align-items: center;
-  border-width: 1vh;
-  border-style: solid;
-  border-color: rgb(0, 0, 0);
 }
 
 .right {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-  }
+  position: fixed;
+  top: 0;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+}
 
 .image {
   position: fixed;
   top: 30%;
-  left: 10%;
+  left: 20%;
   right: 50%;
   bottom: 0;
+}
+
+.annotation {
+  position: fixed;
+  top: 50%;
+  left: 55%;
+  /* right: 50%; */
+  bottom: 0;
+}
+
+.textbox {
+  height: 5vh;
+  width: 30vh;
 }
