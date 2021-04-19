@@ -136,7 +136,6 @@ window.onload = function () {
   var bt = document.getElementById("submit");
 
   function validSubmit() {
-    console.log(selection);
     var text = document.getElementById("annotate");
     if (text.value.length === 0 || selection.every((v) => v === false)) {
       bt.disabled = true;
