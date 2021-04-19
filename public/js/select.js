@@ -4,31 +4,25 @@
 //   return parent.id && parent.id === containerID ? elm : {};
 // }
 
-// var sel1 = false;
-// var sel2 = false;
-// var sel3 = false;
-// var sel4 = false;
-// var sel5 = false;
-// var sel6 = false;
-// var sel7 = false;
 var selection = [false, false, false, false, false, false, false];
 
-// var an1 = false;
-// var an2 = false;
-// var an3 = false;
-// var an4 = false;
-// var an5 = false;
-// var an6 = false;
-// var an7 = false;
-var annotated = ["", "", "", "", "", "", ""];
+var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
+
+const colors = {
+  1: "red",
+  2: "green",
+  3: "purple",
+  4: "blue",
+  5: "gold",
+  6: "pink",
+  7: "orange",
+};
 
 function seleted(t, sel) {
   if (!sel) {
     t.setAttribute("stroke", "lime");
-    t.setAttribute("stroke-width", "2");
   } else {
-    t.setAttribute("stroke", "");
-    t.setAttribute("stroke-width", "");
+    t.setAttribute("stroke", "black");
   }
 }
 
@@ -49,77 +43,144 @@ window.onload = function () {
   t1.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 1";
-      seleted(t1, selection[0]);
-      selection[0] = !selection[0];
+      if (annotated[1] === "") {
+        seleted(t1, selection[0]);
+        selection[0] = !selection[0];
+        validSubmit();
+      }
     },
     false
   );
   t2.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 2";
-      seleted(t2, selection[1]);
-      selection[1] = !selection[1];
+      if (annotated[2] === "") {
+        seleted(t2, selection[1]);
+        selection[1] = !selection[1];
+        validSubmit();
+      }
     },
     false
   );
   t3.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 3";
-      seleted(t3, selection[2]);
-      selection[2] = !selection[2];
+      if (annotated[3] === "") {
+        seleted(t3, selection[2]);
+        selection[2] = !selection[2];
+        validSubmit();
+      }
     },
     false
   );
   t4.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 4";
-      seleted(t4, selection[3]);
-      selection[3] = !selection[3];
+      if (annotated[4] === "") {
+        seleted(t4, selection[3]);
+        selection[3] = !selection[3];
+        validSubmit();
+      }
     },
     false
   );
   t5.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 5";
-      seleted(t5, selection[4]);
-      selection[4] = !selection[4];
+      if (annotated[5] === "") {
+        seleted(t5, selection[4]);
+        selection[4] = !selection[4];
+        validSubmit();
+      }
     },
     false
   );
   t6.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 6";
-      seleted(t6, selection[5]);
-      selection[5] = !selection[5];
+      if (annotated[6] === "") {
+        seleted(t6, selection[5]);
+        selection[5] = !selection[5];
+        validSubmit();
+      }
     },
     false
   );
   t7.addEventListener(
     "click",
     function (event) {
-      document.getElementById("output").innerHTML = "Click 7";
-      seleted(t7, selection[6]);
-      selection[6] = !selection[6];
+      if (annotated[7] === "") {
+        seleted(t7, selection[6]);
+        selection[6] = !selection[6];
+        validSubmit();
+      }
     },
     false
   );
 
+  //Next Button
+  var next = document.getElementById("next");
+  function checkDone() {
+    var done = true;
+    Object.values(annotated).forEach((val) => {
+      if (val === "") {
+        done = false;
+      }
+    });
+    if (done) {
+      next.disabled = false;
+    }
+  }
+
+  // Submit button
   var bt = document.getElementById("submit");
-  
+
+  function validSubmit() {
+    console.log(selection);
+    var text = document.getElementById("annotate");
+    if (text.value.length === 0 || selection.every((v) => v === false)) {
+      bt.disabled = true;
+    } else {
+      bt.disabled = false;
+    }
+  }
 
   bt.addEventListener(
     "click",
     function (event) {
       if (!selection.every((v) => v === false)) {
+        // annotation
         var ann = document.getElementById("annotate").value;
-        document.getElementById("output").innerHTML = ann;
+        //selected pieces
+        const indices = selection.reduce(
+          (out, bool, index) => (bool ? out.concat(index + 1) : out),
+          []
+        );
+        // annotation color
+        const color = colors[indices[0]];
+        // get output box
+        var output = document.getElementById("output");
+
+        // color the pieces, add annotation
+        for (var i = 0; i < indices.length; i++) {
+          // index in selected pieces indices array (piece id)
+          const id = indices[i];
+          var t = svgDoc.getElementById(id.toString());
+          t.setAttribute("fill", color);
+          t.setAttribute("stroke", "");
+          // deselect
+          selection[id - 1] = !selection[id - 1];
+          // add annotation
+          annotated[id] = ann;
+        }
+        // add annotation
+        output.innerHTML += '<p style="color:' + color + ';">' + ann + "</p>";
+
+        // clear inputs
         document.getElementById("annotate").value = "";
+
+        // check done
+        checkDone();
       }
     },
     false

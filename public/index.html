@@ -47,7 +47,10 @@
       ></object>
     </div>
     <div class="right">
-      <button id="next" class="button next">Next</button>
+      <div class="output" id="output">
+        <p>Annotation:</p>
+      </div>
+      <button id="next" class="button next" disabled>Next</button>
       <div class="annotation">
         <input
           id="annotate"
@@ -57,21 +60,16 @@
         />
         <button id="submit" class="button" disabled>Submit</button>
       </div>
-      <p id="output"></p>
     </div>
 
     <script>
       function stoppedTyping() {
         var text = document.getElementById("annotate");
         var bt = document.getElementById("submit");
-        if (text.value.length === 0) {
-          console.log("true");
+        if (text.value.length === 0 || selection.every((v) => v === false)) {
           bt.disabled = true;
-          //   bt.style.backgroundColor = "#808080";
         } else {
-          console.log("ff");
           bt.disabled = false;
-          //   bt.style.backgroundColor = "#4caf50";
         }
       }
     </script>
