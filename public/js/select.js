@@ -178,6 +178,7 @@ window.onload = function () {
 
         // clear inputs
         document.getElementById("annotate").value = "";
+        bt.disabled = true;
 
         // check done
         checkDone();
