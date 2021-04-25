@@ -8,7 +8,7 @@ var selection = [false, false, false, false, false, false, false];
 
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
 var ann_to_idx = {}; // maps annotation to list of piece ids
-var li_to_ann = {}; // maps list item id to annotation
+var li_to_ann = {}; // maps list item id to metadata
 var lastid = 0;
 
 const colors = {
@@ -177,13 +177,21 @@ window.onload = function () {
             ann_to_idx[ann] = [id];
           }
         }
-        console.log(ann_to_idx);
 
+        // check for duplicate
+        if (ann_to_idx[ann]) {
+        }
         // present annotation
         var list = document.getElementById("list");
         var entry = document.createElement("li");
         entry.appendChild(document.createTextNode(ann));
         entry.setAttribute("id", lastid);
+        li_to_ann[lastid] = {
+          annotation: ann,
+          pieces: ann_to_idx[ann],
+          timestamp: Date.now(),
+          final: true,
+        };
         entry.setAttribute("style", "color:" + color);
 
         //remove annotation
@@ -202,6 +210,7 @@ window.onload = function () {
         document.getElementById("annotate").value = "";
         bt.disabled = true;
 
+        console.log(ann_to_idx, annotated, li_to_ann);
         // check done all pieces
         checkDone();
       }

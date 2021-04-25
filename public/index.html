@@ -94,7 +94,9 @@
         }
         //delete ann_to_idx entry
         delete ann_to_idx[ann];
-        console.log(ann_to_idx, annotated);
+        // set final to false in log
+        li_to_ann[id]["final"] = false;
+        console.log(ann_to_idx, annotated, li_to_ann);
       }
     </script>
 
