@@ -7,22 +7,25 @@
 var selection = [false, false, false, false, false, false, false];
 
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
+var ann_to_idx = {}; // maps annotation to list of piece ids
+var li_to_ann = {}; // maps list item id to annotation
+var lastid = 0;
 
 const colors = {
   1: "red",
   2: "green",
-  3: "purple",
-  4: "blue",
-  5: "gold",
+  3: "blue",
+  4: "yellow",
+  5: "purple",
   6: "pink",
   7: "orange",
 };
 
 function seleted(t, sel) {
   if (!sel) {
-    t.setAttribute("stroke", "lime");
+    t.setAttribute("fill-opacity", "1");
   } else {
-    t.setAttribute("stroke", "black");
+    t.setAttribute("fill-opacity", "0.4");
   }
 }
 
@@ -157,8 +160,6 @@ window.onload = function () {
         );
         // annotation color
         const color = colors[indices[0]];
-        // get output box
-        var output = document.getElementById("output");
 
         // color the pieces, add annotation
         for (var i = 0; i < indices.length; i++) {
@@ -166,20 +167,42 @@ window.onload = function () {
           const id = indices[i];
           var t = svgDoc.getElementById(id.toString());
           t.setAttribute("fill", color);
-          t.setAttribute("stroke", "");
           // deselect
           selection[id - 1] = !selection[id - 1];
-          // add annotation
+          // add annotation and reverse mapping
           annotated[id] = ann;
+          if (ann_to_idx[ann]) {
+            ann_to_idx[ann].push(id);
+          } else {
+            ann_to_idx[ann] = [id];
+          }
         }
-        // add annotation
-        output.innerHTML += '<p style="color:' + color + ';">' + ann + "</p>";
+        console.log(ann_to_idx);
+
+        // present annotation
+        var list = document.getElementById("list");
+        var entry = document.createElement("li");
+        entry.appendChild(document.createTextNode(ann));
+        entry.setAttribute("id", lastid);
+        entry.setAttribute("style", "color:" + color);
+
+        //remove annotation
+        var removeButton = document.createElement("button");
+        removeButton.appendChild(document.createTextNode("X"));
+        removeButton.setAttribute(
+          "onClick",
+          'remove("' + ann + '","' + lastid + '")'
+        );
+        lastid += 1;
+        removeButton.setAttribute("style", "margin-left:2vh");
+        entry.appendChild(removeButton);
+        list.appendChild(entry);
 
         // clear inputs
         document.getElementById("annotate").value = "";
         bt.disabled = true;
 
-        // check done
+        // check done all pieces
         checkDone();
       }
     },

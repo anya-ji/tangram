@@ -42,13 +42,16 @@
       <object
         class="image"
         id="tangramObj"
-        data="assets_temp/Test.svg"
+        data="assets_temp/7.svg"
         type="image/svg+xml"
       ></object>
     </div>
     <div class="right">
-      <div class="output" id="output">
+      <div class="output-outer">
         <p>Annotation:</p>
+        <div class="output" id="output">
+          <ol id="list"></ol>
+        </div>
       </div>
       <button id="next" class="button next" disabled>Next</button>
       <div class="annotation">
@@ -71,6 +74,27 @@
         } else {
           bt.disabled = false;
         }
+      }
+
+      // remove annotation
+      function remove(ann, id) {
+        var item = document.getElementById(id);
+        list.removeChild(item);
+        //lookup id(annotation) to pieces
+        const pieces = ann_to_idx[ann];
+        for (var i = 0; i < pieces.length; i++) {
+          //remove piece annotation
+          const piece_id = pieces[i];
+          annotated[piece_id] = "";
+          var a = document.getElementById("tangramObj");
+          var svgDoc = a.contentDocument;
+          var t = svgDoc.getElementById(piece_id);
+          t.setAttribute("fill-opacity", "0.4");
+          t.setAttribute("fill", colors[piece_id]);
+        }
+        //delete ann_to_idx entry
+        delete ann_to_idx[ann];
+        console.log(ann_to_idx, annotated);
       }
     </script>
 

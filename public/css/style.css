@@ -66,7 +66,7 @@
 
 .annotation {
   position: fixed;
-  top: 60%;
+  top: 65%;
   left: 55%;
   bottom: 0;
 }
@@ -76,10 +76,26 @@
   width: 30vh;
 }
 
+.output-outer {
+  position: fixed;
+  top: 15%;
+  left: 55%;
+  right: 10%;
+  bottom: 40%;
+  font-size: 20px;
+}
+
 .output {
   position: fixed;
   top: 20%;
-  left: 60%;
-  bottom: 50%;
+  left: 55%;
+  right: 10%;
+  bottom: 40%;
   font-size: 20px;
+  background-color: lightgray;
+  padding-left: 1vh;
+}
+
+.remove {
+  margin-left: 2vw;
 }
