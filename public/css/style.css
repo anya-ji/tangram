@@ -1,5 +1,4 @@
 .button {
-  background-color: #4caf50;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -23,13 +22,6 @@
   margin: 4px 2px;
   cursor: default;
 }
-/* 
-.submit {
-  z-index: 10;
-  position: absolute;
-  left: 75%;
-  top: 90%;
-} */
 
 .next {
   z-index: 10;
@@ -96,6 +88,15 @@
   padding-left: 1vh;
 }
 
-.remove {
-  margin-left: 2vw;
+.submit {
+  background-color: #4caf50;
+}
+
+.add {
+  background-color: #4c7caf;
+}
+
+.duplicate {
+  background-color: #f99f04;
+  visibility: hidden;
 }

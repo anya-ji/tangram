@@ -12,15 +12,15 @@
       media="screen"
       charset="utf-8"
     />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" type="text/css" media="screen" charset="utf-8"> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.0.2/svg.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="js/svg.select.min.js"></script>
-    <script src="js/svg.draggy.js"></script>
-    <script src="js/css.rotate.js"></script>
-    <script src="js/crossy.js"></script>
-    <script src="js/index.js"></script>
     <script src="js/select.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <!-- jQuery Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
+    />
     <!-- <script type="text/javascript" src="js/db.js"></script> -->
     <!-- <script src="firebase_config.js"></script> -->
     <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
@@ -60,8 +60,10 @@
           class="textbox"
           type="text"
           onkeyup="stoppedTyping()"
+          disabled
         />
-        <button id="submit" class="button" disabled>Submit</button>
+        <button id="submit" class="button submit" disabled>Submit</button>
+        <button id="duplicate" class="button duplicate">Duplicate</button>
       </div>
     </div>
 
@@ -69,10 +71,26 @@
       function stoppedTyping() {
         var text = document.getElementById("annotate");
         var bt = document.getElementById("submit");
+        var dup = document.getElementById("duplicate");
         if (text.value.length === 0 || selection.every((v) => v === false)) {
+          // empty input or no selection
           bt.disabled = true;
+          bt.setAttribute("class", "button submit");
+          bt.innerText = "Submit";
+          dup.setAttribute("style", "visibility: hidden");
         } else {
           bt.disabled = false;
+          //duplicate
+          if (ann_to_idx[text.value]) {
+            bt.setAttribute("class", "button add");
+            bt.innerText = "Add to Group";
+            dup.setAttribute("style", "visibility: visible");
+          } else {
+            //new annotation
+            bt.setAttribute("class", "button submit");
+            bt.innerText = "Submit";
+            dup.setAttribute("style", "visibility: hidden");
+          }
         }
       }
 
@@ -96,6 +114,11 @@
         delete ann_to_idx[ann];
         // set final to false in log
         li_to_ann[id]["final"] = false;
+
+        // disable next
+        var next = document.getElementById("next");
+        next.disabled = true;
+
         console.log(ann_to_idx, annotated, li_to_ann);
       }
     </script>

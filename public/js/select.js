@@ -140,6 +140,13 @@ window.onload = function () {
 
   function validSubmit() {
     var text = document.getElementById("annotate");
+    if (!selection.every((v) => v === false)) {
+      text.disabled = false;
+    } else {
+      text.value = "";
+      text.disabled = true;
+    }
+
     if (text.value.length === 0 || selection.every((v) => v === false)) {
       bt.disabled = true;
     } else {
@@ -211,6 +218,9 @@ window.onload = function () {
         bt.disabled = true;
 
         console.log(ann_to_idx, annotated, li_to_ann);
+
+        //
+        validSubmit()
         // check done all pieces
         checkDone();
       }
