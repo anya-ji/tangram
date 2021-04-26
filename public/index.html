@@ -13,6 +13,7 @@
       charset="utf-8"
     />
     <script src="js/select.js"></script>
+    <script src="js/instructions.js"></script>
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <!-- jQuery Modal -->
@@ -39,12 +40,16 @@
             <h1 class="text-center">Tangram</h1>
         </div> -->
     <div class="left">
-      <object
-        class="image"
-        id="tangramObj"
-        data="assets_temp/7.svg"
-        type="image/svg+xml"
-      ></object>
+      <div class="instructions">
+        <p id="instructions"></p>
+      </div>
+      <div class="image">
+        <object
+          id="tangramObj"
+          data="assets_temp/7.svg"
+          type="image/svg+xml"
+        ></object>
+      </div>
     </div>
     <div class="right">
       <div class="output-outer">
@@ -66,6 +71,10 @@
         <button id="duplicate" class="button duplicate">Duplicate</button>
       </div>
     </div>
+
+    <script>
+      document.getElementById("instructions").innerHTML = instructions;
+    </script>
 
     <script>
       function stoppedTyping() {
