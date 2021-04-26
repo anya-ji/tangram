@@ -24,6 +24,7 @@
 }
 
 .next {
+  background-color: #4caf50;
   z-index: 10;
   position: absolute;
   left: 65%;

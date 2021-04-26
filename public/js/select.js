@@ -8,8 +8,22 @@ var selection = [false, false, false, false, false, false, false];
 
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
 var ann_to_idx = {}; // maps annotation to list of piece ids
-var li_to_ann = {}; // maps list item id to metadata
+var metadata = {}; // maps list item id to metadata
 var lastid = 0;
+var piece_to_color = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" }; // current color of piece
+var piece_to_last_id = { 1: -1, 2: -1, 3: -1, 4: -1, 5: -1, 6: -1, 7: -1 }; // last operation id on piece
+// var append_idx = {}; // maps annotation group to index to append for duplicating
+
+function logging() {
+  console.log(
+    selection,
+    annotated,
+    ann_to_idx,
+    metadata,
+    piece_to_color,
+    piece_to_last_id
+  );
+}
 
 const colors = {
   1: "red",
@@ -137,6 +151,8 @@ window.onload = function () {
 
   // Submit button
   var bt = document.getElementById("submit");
+  // Duplicate button
+  var dup = document.getElementById("duplicate");
 
   function validSubmit() {
     var text = document.getElementById("annotate");
@@ -154,51 +170,72 @@ window.onload = function () {
     }
   }
 
-  bt.addEventListener(
-    "click",
-    function (event) {
-      if (!selection.every((v) => v === false)) {
-        // annotation
-        var ann = document.getElementById("annotate").value;
-        //selected pieces
-        const indices = selection.reduce(
-          (out, bool, index) => (bool ? out.concat(index + 1) : out),
-          []
-        );
-        // annotation color
-        const color = colors[indices[0]];
+  /** MAIN ANNOTATION */
+  function annotate(ann) {
+    if (!selection.every((v) => v === false)) {
+      //selected pieces
+      var indices = selection.reduce(
+        (out, bool, index) => (bool ? out.concat(index + 1) : out),
+        []
+      );
 
-        // color the pieces, add annotation
-        for (var i = 0; i < indices.length; i++) {
-          // index in selected pieces indices array (piece id)
-          const id = indices[i];
-          var t = svgDoc.getElementById(id.toString());
-          t.setAttribute("fill", color);
-          // deselect
-          selection[id - 1] = !selection[id - 1];
-          // add annotation and reverse mapping
-          annotated[id] = ann;
-          if (ann_to_idx[ann]) {
-            ann_to_idx[ann].push(id);
-          } else {
-            ann_to_idx[ann] = [id];
-          }
-        }
+      console.log(indices);
+      // annotation color
+      var color = colors[indices[0]];
+      const old_ann_idx = ann_to_idx[ann];
 
-        // check for duplicate
+      // check for duplicate
+      // is dup & add to group
+      // 1. color the piece to group color
+      // 2. set old metadata "final" field to false
+      // 3. add new metadata
+      if (old_ann_idx) {
+        // get group color, override new color
+        color = piece_to_color[old_ann_idx[0]];
+        // set final of last operation to false
+        var last_operation = piece_to_last_id[old_ann_idx[0]];
+        metadata[last_operation]["final"] = false;
+        // prepare coloring
+        indices = indices.concat(old_ann_idx); // indices is now old+new
+        console.log(indices);
+        delete ann_to_idx[ann]; // delete old entry
+      }
+
+      // color the pieces, add annotation
+      for (var i = 0; i < indices.length; i++) {
+        // index in selected pieces indices array (piece id)
+        const id = indices[i];
+        var t = svgDoc.getElementById(id.toString());
+        t.setAttribute("fill", color);
+        // deselect
+        selection[id - 1] = false;
+        // add annotation and reverse mapping
+        annotated[id] = ann;
         if (ann_to_idx[ann]) {
+          ann_to_idx[ann].push(id);
+        } else {
+          ann_to_idx[ann] = [id];
         }
-        // present annotation
+        // add to piece_to_color
+        piece_to_color[id] = color;
+        // record last operation
+        piece_to_last_id[id] = lastid;
+      }
+
+      // save metadata
+      metadata[lastid] = {
+        annotation: ann,
+        pieces: ann_to_idx[ann],
+        timestamp: Date.now(),
+        final: true,
+      };
+
+      // present NEW annotation
+      if (!old_ann_idx) {
         var list = document.getElementById("list");
         var entry = document.createElement("li");
         entry.appendChild(document.createTextNode(ann));
         entry.setAttribute("id", lastid);
-        li_to_ann[lastid] = {
-          annotation: ann,
-          pieces: ann_to_idx[ann],
-          timestamp: Date.now(),
-          final: true,
-        };
         entry.setAttribute("style", "color:" + color);
 
         //remove annotation
@@ -208,25 +245,52 @@ window.onload = function () {
           "onClick",
           'remove("' + ann + '","' + lastid + '")'
         );
-        lastid += 1;
+
         removeButton.setAttribute("style", "margin-left:2vh");
         entry.appendChild(removeButton);
         list.appendChild(entry);
-
-        // clear inputs
-        document.getElementById("annotate").value = "";
-        bt.disabled = true;
-
-        console.log(ann_to_idx, annotated, li_to_ann);
-
-        //
-        validSubmit()
-        // check done all pieces
-        checkDone();
       }
+
+      // clear inputs
+      document.getElementById("annotate").value = "";
+      bt.disabled = true;
+
+      dup.disabled = true;
+
+      logging();
+
+      // increment operations
+      lastid += 1;
+      // restore submit/textbox
+      validSubmit();
+      // check done all pieces
+      checkDone();
+    }
+  }
+
+  // Submit or add to group
+  bt.addEventListener(
+    "click",
+    function (event) {
+      // annotation
+      var ann = document.getElementById("annotate").value;
+      annotate(ann);
     },
     false
   );
+
+  // Duplicate
+  // dup.addEventListener(
+  //   "click",
+  //   function (event) {
+  //     if(append_idx[ann]){
+
+  //     };
+  //     console.log();
+  //     annotate(ann + append_idx.toString());
+  //   },
+  //   false
+  // );
 };
 
 // function download(){
