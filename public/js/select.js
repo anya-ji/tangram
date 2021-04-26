@@ -29,17 +29,21 @@ const colors = {
   1: "red",
   2: "green",
   3: "blue",
-  4: "yellow",
+  4: "gold", // yellow
   5: "purple",
-  6: "pink",
+  6: "deeppink",
   7: "orange",
 };
 
 function seleted(t, sel) {
   if (!sel) {
-    t.setAttribute("fill-opacity", "1");
+    // t.setAttribute("fill-opacity", "1");
+    // t.setAttribute("stroke", "lime");
+    t.setAttribute("fill","lightgreen")
   } else {
-    t.setAttribute("fill-opacity", "0.4");
+    // t.setAttribute("fill-opacity", "0.4");
+    // t.setAttribute("stroke", "white");
+    t.setAttribute("fill","gray")
   }
 }
 
@@ -207,6 +211,7 @@ window.onload = function () {
         const id = indices[i];
         var t = svgDoc.getElementById(id.toString());
         t.setAttribute("fill", color);
+        // t.setAttribute("stroke", "white");
         // deselect
         selection[id - 1] = false;
         // add annotation and reverse mapping

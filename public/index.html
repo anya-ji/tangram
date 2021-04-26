@@ -46,7 +46,7 @@
       <div class="image">
         <object
           id="tangramObj"
-          data="assets_temp/7.svg"
+          data="assets_temp/Test.svg"
           type="image/svg+xml"
         ></object>
       </div>
@@ -119,8 +119,10 @@
           var a = document.getElementById("tangramObj");
           var svgDoc = a.contentDocument;
           var t = svgDoc.getElementById(piece_id);
-          t.setAttribute("fill-opacity", "0.4");
-          t.setAttribute("fill", colors[piece_id]);
+          // t.setAttribute("fill-opacity", "0.4");
+          // t.setAttribute("fill", colors[piece_id]);
+          // t.setAttribute("stroke", "white");
+          t.setAttribute("fill", "gray");
           // reset tracker data
           piece_to_color[piece_id] = "";
         }
