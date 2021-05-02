@@ -3,8 +3,26 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Tangram</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/caiuss/1.0.2/caiuss.min.css" type="text/css" media="screen" charset="utf-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" type="text/css" media="screen" charset="utf-8"> -->
+    <!-- font -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/caiuss/1.0.2/caiuss.min.css"
+      type="text/css"
+      media="screen"
+      charset="utf-8"
+    />
+    <!-- icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css"
+      type="text/css"
+      media="screen"
+      charset="utf-8"
+    />
+    <!-- alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <!-- styles -->
     <link
       rel="stylesheet"
       href="css/style.css"
@@ -12,16 +30,11 @@
       media="screen"
       charset="utf-8"
     />
+    <!-- js -->
     <script src="js/select.js"></script>
-    <script src="js/instructions.js"></script>
-    <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <!-- jQuery Modal -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
-    />
+    <!-- <script src="js/instructions.js"></script> -->
+    <script src="js/index.js"></script>
+
     <!-- <script type="text/javascript" src="js/db.js"></script> -->
     <!-- <script src="firebase_config.js"></script> -->
     <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
@@ -36,13 +49,19 @@
     <script src="/__/firebase/8.3.1/firebase-firestore.js"></script>
     <script src="/__/firebase/8.3.1/firebase-storage.js"></script>
 
-    <!-- <div class="title">
-            <h1 class="text-center">Tangram</h1>
-        </div> -->
+    <div class="title">
+      <h1 class="text-center">Tangrams</h1>
+    </div>
+
     <div class="left">
-      <div class="instructions">
-        <p id="instructions"></p>
+      <div class="sidebar">
+        <div class="sidebar-item" onclick="showTutorial()">
+          <span class="octicon octicon-question"></span>
+        </div>
       </div>
+      <!-- <div class="instructions">
+        <p id="instructions"></p>
+      </div> -->
       <div class="image">
         <object
           id="tangramObj"
@@ -72,9 +91,9 @@
       </div>
     </div>
 
-    <script>
+    <!-- <script>
       document.getElementById("instructions").innerHTML = instructions;
-    </script>
+    </script> -->
 
     <script>
       function stoppedTyping() {
@@ -154,70 +173,7 @@
       const storage = firebase.storage();
       var storageRef = storage.ref();
 
-      //download SVG
-      function GetElementInsideContainer(containerID, childID) {
-        var elm = document.getElementById(childID);
-        var parent = elm ? elm.parentNode : {};
-        return parent.id && parent.id === containerID ? elm : {};
-      }
-
-      function download() {
-        var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000")
-          .outerHTML;
-
-        var svgBlob = new Blob([svgData], {
-          type: "image/svg+xml;charset=utf-8",
-        });
-        // var svgUrl = URL.createObjectURL(svgBlob);
-        // var downloadLink = document.createElement("a");
-        // downloadLink.href = svgUrl;
-        // downloadLink.download = "test.svg";
-        // // document.body.appendChild(downloadLink);
-        // downloadLink.click();
-        // // document.body.removeChild(downloadLink);
-
-        return svgBlob;
-      }
-
-      function submit() {
-        var blob = download();
-
-        var ref = storageRef.child("svgs/test.svg");
-
-        ref.put(blob).then((snapshot) => {
-          console.log("Uploaded a blob or file!");
-          snapshot.ref.getDownloadURL().then((url) => {
-            db.collection("svgs")
-              .add({
-                name: "placeholder",
-                link: url,
-              })
-              .then((docRef) => {
-                console.log("Document written with ID: ", docRef.id);
-              })
-              .catch((error) => {
-                console.error("Error adding document: ", error);
-              });
-          });
-        });
-      }
-      document.getElementById("submit").addEventListener("click", submit());
+      
     </script>
-
-    <!-- <div class="sidebar">
-            <div class="sidebar-item" onclick="showTutorial()">
-                <span class="octicon octicon-question"></span>
-            </div>
-            <div class="sidebar-item">
-                <a href="https://github.com/IonicaBizau/tangram" target="blank">
-                    <span class="octicon octicon-octoface"></span>
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="https://www.google.ro/search?q=tangram+ideas&tbm=isch" target="blank">
-                    <span class="octicon octicon-light-bulb"></span>
-                </a>
-            </div>
-        </div> -->
   </body>
 </html>

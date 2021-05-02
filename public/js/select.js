@@ -1,9 +1,3 @@
-// function getChild(containerID, childID) {
-//   var elm = document.getElementById(childID);
-//   var parent = elm ? elm.parentNode : {};
-//   return parent.id && parent.id === containerID ? elm : {};
-// }
-
 var selection = [false, false, false, false, false, false, false];
 
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
@@ -297,17 +291,3 @@ window.onload = function () {
   //   false
   // );
 };
-
-// function download(){
-//     var svgData = GetElementInsideContainer("graph", "SvgjsSvg1000").outerHTML;
-
-//     var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-//     var svgUrl = URL.createObjectURL(svgBlob);
-//     var downloadLink = document.createElement("a");
-//     downloadLink.href = svgUrl;
-//     // downloadLink.download = "test.svg";
-//     // // document.body.appendChild(downloadLink);
-//     // downloadLink.click();
-//     // // document.body.removeChild(downloadLink);
-//     return downloadLink
-// }
