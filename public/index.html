@@ -3,14 +3,6 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Tangram</title>
-    <!-- font -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/caiuss/1.0.2/caiuss.min.css"
-      type="text/css"
-      media="screen"
-      charset="utf-8"
-    />
     <!-- icon -->
     <link
       rel="stylesheet"
@@ -20,7 +12,7 @@
       charset="utf-8"
     />
     <!-- alert -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https:/cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="sweetalert2.all.min.js"></script>
     <!-- styles -->
     <link
@@ -31,43 +23,43 @@
       charset="utf-8"
     />
     <!-- js -->
-    <script src="js/select.js"></script>
+
     <!-- <script src="js/instructions.js"></script> -->
     <script src="js/index.js"></script>
 
-    <!-- <script type="text/javascript" src="js/db.js"></script> -->
     <!-- <script src="firebase_config.js"></script> -->
     <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>   -->
   </head>
+
   <body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="/__/firebase/8.3.1/firebase-app.js"></script>
+    <!-- <script src="/__/firebase/8.3.1/firebase-app.js"></script> -->
 
     <!-- Add Firebase products that you want to use -->
-    <script src="/__/firebase/8.3.1/firebase-auth.js"></script>
+    <!-- <script src="/__/firebase/8.3.1/firebase-auth.js"></script>
     <script src="/__/firebase/8.3.1/firebase-firestore.js"></script>
-    <script src="/__/firebase/8.3.1/firebase-storage.js"></script>
+    <script src="/__/firebase/8.3.1/firebase-storage.js"></script> -->
 
-    <div class="title">
+    <!-- <div class="title">
       <h1 class="text-center">Tangrams</h1>
-    </div>
+    </div> -->
 
     <div class="left">
-      <div class="sidebar">
-        <div class="sidebar-item" onclick="showTutorial()">
-          <span class="octicon octicon-question"></span>
-        </div>
-      </div>
+      <!-- <div class="sidebar"> -->
+      <button class="button submit" onclick="showTutorial()">
+        <!-- <span class="octicon octicon-question"></span> -->
+        Instructions
+      </button>
+
+      <!-- <div id="firebaseui-auth-container"></div> -->
+
+      <!-- </div> -->
       <!-- <div class="instructions">
         <p id="instructions"></p>
       </div> -->
       <div class="image">
-        <object
-          id="tangramObj"
-          data="assets_temp/Test.svg"
-          type="image/svg+xml"
-        ></object>
+        <object id="tangramObj" data="" type="image/svg+xml"></object>
       </div>
     </div>
     <div class="right">
@@ -159,7 +151,7 @@
     </script>
 
     <!-- Firebase -->
-    <script>
+    <!-- <script>
       var firebaseConfig = {
         apiKey: "AIzaSyDVFNgeaaWeBSNdAXoieOHmeoEcMnST6Xc",
         authDomain: "tangram-c997f.firebaseapp.com",
@@ -172,8 +164,62 @@
       const db = firebase.firestore();
       const storage = firebase.storage();
       var storageRef = storage.ref();
+    </script> -->
 
-      
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-storage.js"></script>
+
+    <script type="text/javascript">
+      var firebaseConfig = {
+        apiKey: "AIzaSyDVFNgeaaWeBSNdAXoieOHmeoEcMnST6Xc",
+        authDomain: "tangram-c997f.firebaseapp.com",
+        projectId: "tangram-c997f",
+        storageBucket: "tangram-c997f.appspot.com",
+        messagingSenderId: "828079104765",
+        appId: "1:828079104765:web:d8c5928395240394e0d494",
+      };
+      firebase.initializeApp(firebaseConfig);
     </script>
+
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"
+    />
+
+    <!-- <script type="text/javascript">
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      var uiConfig = {
+        callbacks: {
+          signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+            // User successfully signed in.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            console.log(authResult, redirectUrl);
+            return false;
+          },
+          uiShown: function () {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById("loader").style.display = "none";
+          },
+        },
+        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+        signInFlow: "popup",
+        signInSuccessUrl: "<url-to-redirect-to-on-success>",
+        signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+        // Other config options...
+      };
+      ui.start("#firebaseui-auth-container", uiConfig);
+    </script> -->
+    <script type="text/javascript" src="js/select.js"></script>
+    <script type="text/javascript" src="js/files.js"></script>
+    <!-- <script type="text/javascript" src="js/db.js"></script> -->
   </body>
 </html>

@@ -1,5 +1,8 @@
-var selection = [false, false, false, false, false, false, false];
+var db = firebase.firestore();
+var storageRef = firebase.storage().ref();
 
+var selection = [false, false, false, false, false, false, false];
+var file_count = 0;
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
 var ann_to_idx = {}; // maps annotation to list of piece ids
 var metadata = {}; // maps list item id to metadata
@@ -41,8 +44,7 @@ function seleted(t, sel) {
   }
 }
 
-window.onload = function () {
-  // Get the Object by ID
+function singleTrial() {
   var a = document.getElementById("tangramObj");
   // Get the SVG document inside the Object tag
   var svgDoc = a.contentDocument;
@@ -277,17 +279,69 @@ window.onload = function () {
     },
     false
   );
+}
 
-  // Duplicate
-  // dup.addEventListener(
-  //   "click",
-  //   function (event) {
-  //     if(append_idx[ann]){
+window.onload = function () {
+  // Get the Object by ID
+  var a = document.getElementById("tangramObj");
+  a.setAttribute("data", files[file_count]);
 
-  //     };
-  //     console.log();
-  //     annotate(ann + append_idx.toString());
-  //   },
-  //   false
-  // );
+  a.onload = function () {
+    console.log(a, a.contentDocument);
+    singleTrial();
+  };
+
+  // Next
+  var next = document.getElementById("next");
+
+  function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+  }
+
+  next.addEventListener("click", function (e) {
+    next.disabled = true;
+    var uploadData = annotated;
+    uploadData["tangram"] = files[file_count];
+    db.collection("annotation")
+      .add(uploadData)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        // reset params
+        selection = [false, false, false, false, false, false, false];
+        annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
+        ann_to_idx = {}; // maps annotation to list of piece ids
+        metadata = {}; // maps list item id to metadata
+        lastid = 0;
+        piece_to_color = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" }; // current color of piece
+        piece_to_last_id = { 1: -1, 2: -1, 3: -1, 4: -1, 5: -1, 6: -1, 7: -1 }; // last operation id on piece
+
+        //clear output
+        var list = document.getElementById("list");
+        removeAllChildNodes(list);
+
+        //new tangram
+        if (file_count === files.length - 1) {
+          Swal.fire({
+            title: "<strong>Completed!</strong>",
+            icon: "success",
+            html: "All annotations completed.",
+            showCloseButton: true,
+            focusConfirm: false,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#4caf50",
+          });
+        } else {
+          file_count += 1;
+          a.setAttribute("data", files[file_count]);
+          a.onload = function () {
+            singleTrial();
+          };
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+  });
 };

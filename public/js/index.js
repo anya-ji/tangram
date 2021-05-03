@@ -19,6 +19,7 @@ window.showTutorial = function () {
       or add numeric indicators (e.g. leg1/leg2).`,
     showCloseButton: true,
     focusConfirm: false,
-    confirmButtonText: '<i class="fa fa-thumbs-up"></i> Got it!',
+    confirmButtonText: "Got it!",
+    confirmButtonColor: "#4caf50",
   });
 };
