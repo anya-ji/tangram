@@ -9,3 +9,4 @@ package-lock.json
 .bloggify/*
 admin/venv/*
 admin/tangram-c997f-firebase-adminsdk-uub5z-bb85bd2526.json
+public/js/firebaseConfig.js
