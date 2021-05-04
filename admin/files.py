@@ -1,3 +1,6 @@
+'''
+Initialize the database with files.
+'''
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -14,9 +17,17 @@ mypath = '../public/assets/'
 files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 # print(files)
 
-initial_files = {}
+# initial_files = {}
+i=0
 for f in files:
-  initial_files[f] = 0
+  # initial_files[f.strip('.svg')] = 0
+  db.collection(u'files').document(f).set({
+    'name': f.strip('.svg'),
+    'count': 0
+  })
+  print(i,":",f)
+  i+=1
 
-doc_ref = db.collection(u'files').document(u'files')
-doc_ref.set(initial_files)
+
+# doc_ref = db.collection(u'files').document(u'files')
+# doc_ref.set(initial_files)

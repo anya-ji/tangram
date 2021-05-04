@@ -1,1 +1,0 @@
-const files = ['assets/3.svg','assets/4.svg']
