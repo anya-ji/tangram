@@ -17,6 +17,7 @@ function pieceTrial() {
       class="textbox"
       type="text"
       onkeyup="stoppedTyping()"
+      autocomplete="off"
       disabled
     />
     <button id="submit" class="button submit" disabled>Submit</button>

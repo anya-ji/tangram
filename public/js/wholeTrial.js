@@ -12,6 +12,7 @@ function wholeTrial() {
           class="textbox"
           type="text"
           onkeyup="stoppedTypingWhole()"
+          autocomplete="off"
         />
       <button id="continue" class="button submit" disabled>Continue</button>
     </div>
