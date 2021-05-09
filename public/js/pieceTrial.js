@@ -1,5 +1,25 @@
 /** BLOCK 2: PIECEWISE ANNOTATION */
 function pieceTrial() {
+  document.getElementById("right").innerHTML = `
+  <div class="output-outer" id="output-outer">
+    <p>Click on tangram pieces to annotate each meaningful part:</p>
+    <div class="output" id="output">
+      <ol id="list"></ol>
+    </div>
+  </div>
+  <button id="next" class="button next" disabled>Next</button>
+  <div class="annotation" id="annotate-outer">
+    <input
+      id="annotate"
+      class="textbox"
+      type="text"
+      onkeyup="stoppedTyping()"
+      disabled
+    />
+    <button id="submit" class="button submit" disabled>Submit</button>
+  </div>
+  `;
+
   var a = document.getElementById("tangramObj");
   // Get the SVG document inside the Object tag
   var svgDoc = a.contentDocument;
@@ -103,6 +123,96 @@ function pieceTrial() {
       next.disabled = false;
     }
   }
+
+  /** UPLOAD DATA*/
+  next.addEventListener("click", function (e) {
+    next.disabled = true;
+
+    var fileName = file.replace(".svg", "");
+    //annotation
+    var uploadData = {};
+
+    uploadData["whole-annotation"] = wholeAnnotation;
+    uploadData["piece-annotation"] = annotated;
+    uploadData["metadata"] = metadata;
+    /* [updateField]
+      user_id: {
+        annotated: 1-7
+        metadata:
+    }*/
+    var updateField = {};
+    updateField[user_id] = uploadData;
+
+    var userField = {};
+    userField[fileName] = uploadData;
+
+    //1. add to annotations
+    //2. increment count in files
+    //3. add to user's annotations
+    db.collection("annotations")
+      .doc(fileName)
+      .set(updateField, { merge: true })
+      .then(() => {
+        console.log("Annotation added!");
+      })
+      .then(() => {
+        db.collection("users")
+          .doc(user_id)
+          .set(userField, { merge: true })
+          .then(() => {
+            console.log("User updated!");
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+          })
+          .then(() => {
+            db.collection("files")
+              .doc(file)
+              .update({
+                count: firebase.firestore.FieldValue.increment(1),
+              })
+              .then(() => {
+                console.log("File count updated!");
+                console.log("Ready for next tangram...");
+
+                reset();
+
+                Swal.fire({
+                  title: "<strong>Submitted!</strong>",
+                  icon: "success",
+                  html: "Ready to annontate the next tangram.",
+                  showCloseButton: true,
+                  focusConfirm: false,
+                  showConfirmButton: false,
+                  timer: 2000,
+                });
+
+                //new tangram
+                db.collection("files")
+                  .orderBy("count")
+                  .limit(1)
+                  .get()
+                  .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                      console.log("Next tangram: ", doc.id);
+                      startTrial(doc.id);
+                    });
+                  })
+                  .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                  });
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+          });
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+
+    // TODO: if done all tangrams
+  });
 
   // Submit button
   var bt = document.getElementById("submit");

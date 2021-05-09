@@ -99,7 +99,16 @@
   position: fixed;
   top: 15%;
   left: 55%;
-  right: 10%;
+  /* right: 10%; */
+  bottom: 40%;
+  font-size: 20px;
+}
+
+.output-outer-whole {
+  position: fixed;
+  top: 50%;
+  left: 55%;
+  /* right: 10%; */
   bottom: 40%;
   font-size: 20px;
 }

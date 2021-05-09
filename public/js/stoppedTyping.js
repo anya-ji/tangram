@@ -1,3 +1,4 @@
+// piecewise annotation
 window.stoppedTyping = function () {
   var text = document.getElementById("annotate");
   var bt = document.getElementById("submit");
@@ -18,4 +19,11 @@ window.stoppedTyping = function () {
       bt.innerText = "Submit";
     }
   }
+};
+
+// whole annotation
+window.stoppedTypingWhole = function () {
+  var text = document.getElementById("annotate-whole");
+  var bt = document.getElementById("continue");
+  bt.disabled = text.value.length === 0;
 };

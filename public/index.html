@@ -45,25 +45,7 @@
       </div>
     </div>
 
-    <div class="right">
-      <div class="output-outer">
-        <p>Annotation:</p>
-        <div class="output" id="output">
-          <ol id="list"></ol>
-        </div>
-      </div>
-      <button id="next" class="button next" disabled>Next</button>
-      <div class="annotation">
-        <input
-          id="annotate"
-          class="textbox"
-          type="text"
-          onkeyup="stoppedTyping()"
-          disabled
-        />
-        <button id="submit" class="button submit" disabled>Submit</button>
-      </div>
-    </div>
+    <div class="right" id="right"></div>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
@@ -109,5 +91,6 @@
     </script> -->
     <script type="text/javascript" src="js/mainTrial.js"></script>
     <script type="text/javascript" src="js/pieceTrial.js"></script>
+    <script type="text/javascript" src="js/wholeTrial.js"></script>
   </body>
 </html>

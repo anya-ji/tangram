@@ -3,6 +3,7 @@ var storageRef = firebase.storage().ref();
 var user_id = "userID-0";
 var file = "";
 
+var wholeAnnotation = "";
 var selection = [false, false, false, false, false, false, false];
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
 var ann_to_idx = {}; // maps annotation to list of piece ids
@@ -37,97 +38,6 @@ window.onload = function () {
     .catch((error) => {
       console.log("Error getting documents: ", error);
     });
-
-  // Next
-  var next = document.getElementById("next");
-
-  /** UPLOAD DATA*/
-  next.addEventListener("click", function (e) {
-    next.disabled = true;
-
-    var fileName = file.replace(".svg", "");
-    //annotation
-    var uploadData = {};
-    uploadData["annotated"] = annotated;
-    uploadData["metadata"] = metadata;
-    /* [updateField]
-      user_id: {
-        annotated: 1-7
-        metadata:
-    }*/
-    var updateField = {};
-    updateField[user_id] = uploadData;
-
-    var userField = {};
-    userField[fileName] = uploadData;
-
-    //1. add to annotations
-    //2. increment count in files
-    //3. add to user's annotations
-    db.collection("annotations")
-      .doc(fileName)
-      .set(updateField, { merge: true })
-      .then(() => {
-        console.log("Annotation added!");
-      })
-      .then(() => {
-        db.collection("users")
-          .doc(user_id)
-          .set(userField, { merge: true })
-          .then(() => {
-            console.log("User updated!");
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-          })
-          .then(() => {
-            db.collection("files")
-              .doc(file)
-              .update({
-                count: firebase.firestore.FieldValue.increment(1),
-              })
-              .then(() => {
-                console.log("File count updated!");
-                console.log("Ready for next tangram...");
-
-                reset();
-
-                Swal.fire({
-                  title: "<strong>Submitted!</strong>",
-                  icon: "success",
-                  html: "Ready to annontate the next tangram.",
-                  showCloseButton: true,
-                  focusConfirm: false,
-                  showConfirmButton: false,
-                  timer: 2000,
-                });
-
-                //new tangram
-                db.collection("files")
-                  .orderBy("count")
-                  .limit(1)
-                  .get()
-                  .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                      console.log("Next tangram: ", doc.id);
-                      startTrial(doc.id);
-                    });
-                  })
-                  .catch((error) => {
-                    console.log("Error getting documents: ", error);
-                  });
-              })
-              .catch((error) => {
-                console.error("Error adding document: ", error);
-              });
-          });
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-
-    // TODO: if done all tangrams
-  });
 };
 
 /** Prepare and start trial. */
@@ -139,7 +49,8 @@ function startTrial(id) {
   // load tangram svg data
   a.onload = function () {
     console.log(a, a.contentDocument);
-    pieceTrial();
+    wholeTrial();
+    //pieceTrial();
   };
 }
 
@@ -169,6 +80,7 @@ function reset() {
     6: -1,
     7: -1,
   };
+  wholeAnnotation = "";
   //clear output
   var list = document.getElementById("list");
   removeAllChildNodes(list);
