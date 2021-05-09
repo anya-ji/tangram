@@ -128,6 +128,11 @@
   background-color: #4caf50;
 }
 
+.instructions-bt {
+  background-color: #4caf50;
+  display: none; /* hide for block 1*/
+}
+
 .add {
   background-color: #4c7caf;
 }

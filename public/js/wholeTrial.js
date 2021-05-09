@@ -1,5 +1,8 @@
 /** BLOCK 1: WHOLE TANGRAM ANNOTATION */
 function wholeTrial() {
+  // hide instruction
+  document.getElementById("instructions").style.display = "none";
+
   document.getElementById("right").innerHTML = `
   <div class="output-outer-whole" id="output-outer-whole">
     <p>Describe the tangram as a whole in a word or phrase:</p>
@@ -15,6 +18,7 @@ function wholeTrial() {
   </div>
   `;
 
+  //continue to piecewise annotation
   var bt = document.getElementById("continue");
   bt.addEventListener("click", function (e) {
     wholeAnnotation = document.getElementById("annotate-whole").value;

@@ -1,5 +1,8 @@
 /** BLOCK 2: PIECEWISE ANNOTATION */
 function pieceTrial() {
+  // hide instruction
+  document.getElementById("instructions").style.display = "block";
+
   document.getElementById("right").innerHTML = `
   <div class="output-outer" id="output-outer">
     <p>Click on tangram pieces to annotate each meaningful part:</p>
