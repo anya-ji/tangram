@@ -18,6 +18,15 @@ function wholeTrial() {
   </div>
   `;
 
+  // continue on enter key
+  document
+    .querySelector("#annotate-whole")
+    .addEventListener("keyup", (event) => {
+      if (event.key !== "Enter") return; // Use `.key` instead.
+      document.querySelector("#continue").click(); // Things you want to do.
+      event.preventDefault(); // No need to `return false;`.
+    });
+
   //continue to piecewise annotation
   var bt = document.getElementById("continue");
   bt.addEventListener("click", function (e) {

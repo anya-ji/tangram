@@ -220,6 +220,13 @@ function pieceTrial() {
   // Submit button
   var bt = document.getElementById("submit");
 
+  // submit on enter key
+  document.querySelector("#annotate").addEventListener("keyup", (event) => {
+    if (event.key !== "Enter") return; // Use `.key` instead.
+    document.querySelector("#submit").click(); // Things you want to do.
+    event.preventDefault(); // No need to `return false;`.
+  });
+
   /** Check if it's a valid annotation. */
   function validSubmit() {
     var text = document.getElementById("annotate");
