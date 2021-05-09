@@ -24,6 +24,8 @@
     />
     <!-- js -->
     <script src="js/instructions.js"></script>
+    <script src="js/stoppedTyping.js"></script>
+    <script src="js/removeAnnotation.js"></script>
   </head>
 
   <body>
@@ -62,60 +64,6 @@
         <button id="submit" class="button submit" disabled>Submit</button>
       </div>
     </div>
-
-    <script>
-      function stoppedTyping() {
-        var text = document.getElementById("annotate");
-        var bt = document.getElementById("submit");
-        if (text.value.length === 0 || selection.every((v) => v === false)) {
-          // empty input or no selection
-          bt.disabled = true;
-          bt.setAttribute("class", "button submit");
-          bt.innerText = "Submit";
-        } else {
-          bt.disabled = false;
-          //duplicate
-          if (ann_to_idx[text.value]) {
-            bt.setAttribute("class", "button add");
-            bt.innerText = "Add to Group";
-          } else {
-            //new annotation
-            bt.setAttribute("class", "button submit");
-            bt.innerText = "Submit";
-          }
-        }
-      }
-
-      // remove annotation
-      function remove(ann, id) {
-        var list = document.getElementById("list");
-        var item = document.getElementById(id);
-        list.removeChild(item);
-        //lookup id(annotation) to pieces
-        const pieces = ann_to_idx[ann];
-        for (var i = 0; i < pieces.length; i++) {
-          //remove piece annotation
-          const piece_id = pieces[i];
-          annotated[piece_id] = "";
-          var a = document.getElementById("tangramObj");
-          var svgDoc = a.contentDocument;
-          var t = svgDoc.getElementById(piece_id);
-          t.setAttribute("fill", "lightgray");
-          // reset tracker data
-          piece_to_color[piece_id] = "";
-        }
-        //delete ann_to_idx entry
-        delete ann_to_idx[ann];
-        // set final to false in log
-        metadata[id]["final"] = false;
-
-        // disable next
-        var next = document.getElementById("next");
-        next.disabled = true;
-
-        logging();
-      }
-    </script>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
