@@ -229,6 +229,13 @@ function pieceTrial() {
     event.preventDefault(); // No need to `return false;`.
   });
 
+  // next on shift key
+  document.addEventListener("keyup", (event) => {
+    if (event.key !== "Shift") return; // Use `.key` instead.
+    document.querySelector("#next").click(); // Things you want to do.
+    event.preventDefault(); // No need to `return false;`.
+  });
+
   /** Check if it's a valid annotation. */
   function validSubmit() {
     var text = document.getElementById("annotate");
