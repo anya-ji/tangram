@@ -32,20 +32,24 @@
     <!-- <div class="title">
       <h1 class="text-center">Tangrams</h1>
     </div> -->
+    <button
+      id="instructions"
+      class="button instructions-bt"
+      onclick="showTutorial()"
+    >
+      Instructions
+    </button>
 
     <div class="left">
-      <button id="instructions" class="button instructions-bt" onclick="showTutorial()">
-        Instructions
-      </button>
-
       <!-- <div id="firebaseui-auth-container"></div> -->
-
       <div class="image">
         <object id="tangramObj" data="" type="image/svg+xml"></object>
       </div>
     </div>
 
     <div class="right" id="right"></div>
+
+    <button id="next" class="button next" disabled>Next</button>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>

@@ -2,6 +2,7 @@
 function wholeTrial() {
   // hide instruction
   document.getElementById("instructions").style.display = "none";
+  document.getElementById("next").style.display = "none";
 
   document.getElementById("right").innerHTML = `
   <div class="output-outer-whole" id="output-outer-whole">
@@ -19,6 +20,8 @@ function wholeTrial() {
   </div>
   `;
 
+  //auto focus on text input
+  document.getElementById("annotate-whole").focus();
   // continue on enter key
   document
     .querySelector("#annotate-whole")

@@ -22,7 +22,7 @@
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
@@ -35,7 +35,7 @@
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 16px;
   margin: 4px 2px;
   cursor: default;
@@ -44,24 +44,34 @@
 .next {
   background-color: #4caf50;
   z-index: 10;
-  position: absolute;
-  left: 65%;
-  top: 80%;
+  position: fixed;
+  left: 80%;
+  bottom: 10%;
+  display: none;
 }
 
 .left {
   position: fixed;
-  top: 0;
+  /* top: 0;
   left: 0;
   right: 50%;
-  bottom: 0;
+  bottom: 0; */
+  top: 5%;
+  left: 40%;
+  left: 0;
+  right: 0;
+  bottom: 50%;
   align-items: center;
 }
 
 .right {
   position: fixed;
-  top: 0;
+  /* top: 0;
   left: 50%;
+  right: 0;
+  bottom: 0; */
+  top: 50%;
+  left: 0;
   right: 0;
   bottom: 0;
   align-items: center;
@@ -77,16 +87,21 @@
 
 .image {
   position: fixed;
-  top: 20%;
+  /* top: 20%;
   left: 20%;
   right: 50%;
-  bottom: 0;
+  bottom: 0; */
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: auto;
+  bottom: 50%;
 }
 
 .annotation {
   position: fixed;
   top: 65%;
-  left: 55%;
+  left: 60%;
   bottom: 0;
 }
 
@@ -95,30 +110,53 @@
   width: 30vh;
 }
 
+.output-outer-whole {
+  position: absolute;
+  /* top: 50%;
+  left: 55%;
+  right: 10%; 
+  bottom: 40%; */
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: 0;
+  font-size: 20px;
+}
 .output-outer {
-  position: fixed;
+  /* position: relative;
   top: 15%;
   left: 55%;
-  /* right: 10%; */
-  bottom: 40%;
+  right: 10%; 
+  bottom: 40%; */
+  position: absolute;
+  top: 1%;
+  left: 2%;
+  right: 0;
+  bottom: 2%;
   font-size: 20px;
 }
 
-.output-outer-whole {
-  position: fixed;
-  top: 50%;
-  left: 55%;
-  /* right: 10%; */
-  bottom: 40%;
-  font-size: 20px;
+.piece-description {
+  position: absolute;
+  top: 0;
+  left: 2%;
+  right: 50%;
+  bottom: 10%;
 }
 
 .output {
-  position: fixed;
+  /* position: fixed;
   top: 20%;
   left: 55%;
   right: 10%;
   bottom: 40%;
+  font-size: 20px;
+  background-color: lightgray; */
+  position: absolute;
+  top: 10%;
+  left: 2%;
+  right: 50%;
+  bottom: 10%;
   font-size: 20px;
   background-color: lightgray;
   padding-left: 1vh;
@@ -142,24 +180,3 @@
   visibility: hidden;
 }
 
-/* .sidebar {
-  background: #4caf50;
-  position: fixed;
-  z-index: 999;
-} */
-
-span.octicon {
-  font-size: 40px;
-  color: #fff;
-  padding: 5px;
-}
-
-/* .sidebar-item {
-  text-align: center;
-  border-bottom: 5px solid #4caf50;
-  cursor: pointer;
-}
-
-.sidebar-item:hover {
-  background: #358137;
-} */

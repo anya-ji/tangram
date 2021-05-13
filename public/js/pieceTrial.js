@@ -1,16 +1,17 @@
 /** BLOCK 2: PIECEWISE ANNOTATION */
 function pieceTrial() {
-  // hide instruction
+  // show instruction & next
   document.getElementById("instructions").style.display = "block";
+  document.getElementById("next").style.display = "block";
 
   document.getElementById("right").innerHTML = `
   <div class="output-outer" id="output-outer">
-    <p>Click on tangram pieces to annotate each meaningful part:</p>
+    <p class="piece-description">Click on tangram pieces to annotate each meaningful part:</p>
     <div class="output" id="output">
       <ol id="list"></ol>
     </div>
   </div>
-  <button id="next" class="button next" disabled>Next</button>
+  
   <div class="annotation" id="annotate-outer">
     <input
       id="annotate"
@@ -233,6 +234,7 @@ function pieceTrial() {
     var text = document.getElementById("annotate");
     if (!selection.every((v) => v === false)) {
       text.disabled = false;
+      text.focus();
     } else {
       text.value = "";
       text.disabled = true;
