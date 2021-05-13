@@ -7,7 +7,7 @@ window.showTutorial = function () {
       2. Type in the annotation.<br/>
       3. If it's a new annotation, click "<b>Submit</b>" or hit ENTER key.<br/>
       4. Delete an annotation by clicking the "<b>X</b>" next to the annotation.<br/>
-      5. When all pieces are annotated, click "<b>Next</b>" to go to the next tangram.<br/>
+      5. When all pieces are annotated, click "<b>Next</b>" or hit SHIFT key to go to the next tangram.<br/>
       <br/>
       <b>Note:</b><br/>
       If the annotation already exists, <br/>

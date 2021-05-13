@@ -29,9 +29,6 @@
   </head>
 
   <body>
-    <!-- <div class="title">
-      <h1 class="text-center">Tangrams</h1>
-    </div> -->
     <button
       id="instructions"
       class="button instructions-bt"
@@ -50,7 +47,7 @@
     <div class="whole-layout" id="whole">
       <div class="output-outer-whole" id="output-outer-whole">
         <p>Describe the tangram as a whole in a word or phrase:</p>
-        <div class="">
+        <div>
           <input
             id="annotate-whole"
             class="textbox"
@@ -59,6 +56,7 @@
             autocomplete="off"
           />
           <button id="continue" class="button submit" disabled>Continue</button>
+          <a class="suggestion"> or hit ENTER</a>
         </div>
       </div>
     </div>
@@ -82,10 +80,14 @@
           disabled
         />
         <button id="submit" class="button submit" disabled>Submit</button>
+        <a class="suggestion"> or hit ENTER</a>
       </div>
     </div>
 
-    <button id="next" class="button next" disabled>Next</button>
+    <div class="next-area" id="next-area">
+      <button id="next" class="button next" disabled>Next</button>
+      <a class="next-suggestion"> or hit SHIFT</a>
+    </div>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>

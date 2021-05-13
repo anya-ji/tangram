@@ -2,7 +2,7 @@
 function wholeTrial() {
   // hide instruction & next
   document.getElementById("instructions").style.display = "none";
-  document.getElementById("next").style.display = "none";
+  document.getElementById("next-area").style.display = "none";
   //show output interface
   document.getElementById("whole").style.display = "block";
   //auto focus on text input
