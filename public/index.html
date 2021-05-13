@@ -47,7 +47,43 @@
       </div>
     </div>
 
-    <div class="right" id="right"></div>
+    <div class="whole-layout" id="whole">
+      <div class="output-outer-whole" id="output-outer-whole">
+        <p>Describe the tangram as a whole in a word or phrase:</p>
+        <div class="">
+          <input
+            id="annotate-whole"
+            class="textbox"
+            type="text"
+            onkeyup="stoppedTypingWhole()"
+            autocomplete="off"
+          />
+          <button id="continue" class="button submit" disabled>Continue</button>
+        </div>
+      </div>
+    </div>
+    <div class="piece-layout" id="piece">
+      <div class="output-outer" id="output-outer">
+        <p class="piece-description">
+          Click on tangram pieces to annotate each meaningful part:
+        </p>
+        <div class="output" id="output">
+          <ol id="list"></ol>
+        </div>
+      </div>
+
+      <div class="annotation" id="annotate-outer">
+        <input
+          id="annotate"
+          class="textbox"
+          type="text"
+          onkeyup="stoppedTyping()"
+          autocomplete="off"
+          disabled
+        />
+        <button id="submit" class="button submit" disabled>Submit</button>
+      </div>
+    </div>
 
     <button id="next" class="button next" disabled>Next</button>
 

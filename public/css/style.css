@@ -1,28 +1,9 @@
-/* .title {
-  position: fixed;
-  z-index: 10;
-  pointer-events: none;
-  color: #2d8bc9;
-  left: 55px;
-  border: 5px solid;
-  padding-bottom: 3px;
-  top: -5px;
-  padding-right: 20px;
-}
-
-.title h1 {
-  display: inline;
-  padding: 0px;
-  padding-left: 20px;
-} */
-
 .button {
   border: none;
   color: white;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
-  /* display: inline-block; */
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
@@ -35,7 +16,6 @@
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
-  /* display: inline-block; */
   font-size: 16px;
   margin: 4px 2px;
   cursor: default;
@@ -52,10 +32,6 @@
 
 .left {
   position: fixed;
-  /* top: 0;
-  left: 0;
-  right: 50%;
-  bottom: 0; */
   top: 5%;
   left: 40%;
   left: 0;
@@ -64,17 +40,24 @@
   align-items: center;
 }
 
-.right {
+.whole-layout {
   position: fixed;
-  /* top: 0;
-  left: 50%;
-  right: 0;
-  bottom: 0; */
   top: 50%;
   left: 0;
   right: 0;
   bottom: 0;
   align-items: center;
+  display: none;
+}
+
+.piece-layout {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  display: none;
 }
 
 .instructions {
@@ -87,10 +70,6 @@
 
 .image {
   position: fixed;
-  /* top: 20%;
-  left: 20%;
-  right: 50%;
-  bottom: 0; */
   top: 5%;
   left: 50%;
   transform: translate(-50%, 0);
@@ -112,10 +91,6 @@
 
 .output-outer-whole {
   position: absolute;
-  /* top: 50%;
-  left: 55%;
-  right: 10%; 
-  bottom: 40%; */
   top: 15%;
   left: 50%;
   transform: translate(-50%, 0);
@@ -123,11 +98,6 @@
   font-size: 20px;
 }
 .output-outer {
-  /* position: relative;
-  top: 15%;
-  left: 55%;
-  right: 10%; 
-  bottom: 40%; */
   position: absolute;
   top: 1%;
   left: 2%;
@@ -145,13 +115,6 @@
 }
 
 .output {
-  /* position: fixed;
-  top: 20%;
-  left: 55%;
-  right: 10%;
-  bottom: 40%;
-  font-size: 20px;
-  background-color: lightgray; */
   position: absolute;
   top: 10%;
   left: 2%;

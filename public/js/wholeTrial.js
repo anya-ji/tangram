@@ -1,27 +1,13 @@
 /** BLOCK 1: WHOLE TANGRAM ANNOTATION */
 function wholeTrial() {
-  // hide instruction
+  // hide instruction & next
   document.getElementById("instructions").style.display = "none";
   document.getElementById("next").style.display = "none";
-
-  document.getElementById("right").innerHTML = `
-  <div class="output-outer-whole" id="output-outer-whole">
-    <p>Describe the tangram as a whole in a word or phrase:</p>
-    <div class="">
-        <input
-          id="annotate-whole"
-          class="textbox"
-          type="text"
-          onkeyup="stoppedTypingWhole()"
-          autocomplete="off"
-        />
-      <button id="continue" class="button submit" disabled>Continue</button>
-    </div>
-  </div>
-  `;
-
+  //show output interface
+  document.getElementById("whole").style.display = "block";
   //auto focus on text input
   document.getElementById("annotate-whole").focus();
+
   // continue on enter key
   document
     .querySelector("#annotate-whole")
@@ -33,8 +19,14 @@ function wholeTrial() {
 
   //continue to piecewise annotation
   var bt = document.getElementById("continue");
+  var text = document.getElementById("annotate-whole");
   bt.addEventListener("click", function (e) {
-    wholeAnnotation = document.getElementById("annotate-whole").value;
+    wholeAnnotation = text.value;
+    // clear inputs
+    text.value = "";
+    // hide output interface
+    document.getElementById("whole").style.display = "none";
+    // BLOCK 2
     pieceTrial();
   });
 }

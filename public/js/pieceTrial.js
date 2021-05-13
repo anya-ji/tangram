@@ -3,28 +3,10 @@ function pieceTrial() {
   // show instruction & next
   document.getElementById("instructions").style.display = "block";
   document.getElementById("next").style.display = "block";
+  // show output interface
+  document.getElementById("piece").style.display = "block";
 
-  document.getElementById("right").innerHTML = `
-  <div class="output-outer" id="output-outer">
-    <p class="piece-description">Click on tangram pieces to annotate each meaningful part:</p>
-    <div class="output" id="output">
-      <ol id="list"></ol>
-    </div>
-  </div>
-  
-  <div class="annotation" id="annotate-outer">
-    <input
-      id="annotate"
-      class="textbox"
-      type="text"
-      onkeyup="stoppedTyping()"
-      autocomplete="off"
-      disabled
-    />
-    <button id="submit" class="button submit" disabled>Submit</button>
-  </div>
-  `;
-
+  // get tangram object
   var a = document.getElementById("tangramObj");
   // Get the SVG document inside the Object tag
   var svgDoc = a.contentDocument;
@@ -200,6 +182,8 @@ function pieceTrial() {
                   .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                       console.log("Next tangram: ", doc.id);
+                      // hide output interface
+                      document.getElementById("piece").style.display = "none";
                       startTrial(doc.id);
                     });
                   })
