@@ -7,26 +7,30 @@ function wholeTrial() {
   document.getElementById("whole").style.display = "block";
   //auto focus on text input
   document.getElementById("annotate-whole").focus();
-
-  // continue on enter key
-  document
-    .querySelector("#annotate-whole")
-    .addEventListener("keyup", (event) => {
-      if (event.key !== "Enter") return; // Use `.key` instead.
-      document.querySelector("#continue").click(); // Things you want to do.
-      event.preventDefault(); // No need to `return false;`.
-    });
-
-  //continue to piecewise annotation
-  var bt = document.getElementById("continue");
-  var text = document.getElementById("annotate-whole");
-  bt.addEventListener("click", function (e) {
-    wholeAnnotation = text.value;
-    // clear inputs
-    text.value = "";
-    // hide output interface
-    document.getElementById("whole").style.display = "none";
-    // BLOCK 2
-    pieceTrial();
-  });
 }
+
+// continue on enter key
+document.querySelector("#annotate-whole").addEventListener("keyup", (event) => {
+  if (event.key !== "Enter") return; // Use `.key` instead.
+  document.querySelector("#continue").click(); // Things you want to do.
+  event.preventDefault(); // No need to `return false;`.
+});
+
+var bt = document.getElementById("continue");
+
+bt.addEventListener("click", function (e) {
+  var text = document.getElementById("annotate-whole");
+  wholeAnnotation = text.value;
+  // clear inputs
+  text.value = "";
+  // hide output interface
+  document.getElementById("whole").style.display = "none";
+  // BLOCK 2
+  // pieceTrial();
+  isPieceTrial = true;
+  // show instruction & next
+  document.getElementById("instructions").style.display = "block";
+  document.getElementById("next-area").style.display = "block";
+  // show output interface
+  document.getElementById("piece").style.display = "block";
+});

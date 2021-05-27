@@ -3,6 +3,7 @@ var storageRef = firebase.storage().ref();
 var user_id = "userID-0";
 var file = "";
 
+var isPieceTrial = false;
 var wholeAnnotation = "";
 var selection = [false, false, false, false, false, false, false];
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
@@ -21,6 +22,15 @@ const colors = {
   6: "deeppink",
   7: "orange",
 };
+
+var svgDoc = null;
+var t1 = null;
+var t2 = null;
+var t3 = null;
+var t4 = null;
+var t5 = null;
+var t6 = null;
+var t7 = null;
 
 /** MAIN TRIAL */
 window.onload = function () {
@@ -48,15 +58,104 @@ function startTrial(id) {
   a.setAttribute("data", "assets/" + file);
   // load tangram svg data
   a.onload = function () {
-    console.log(a, a.contentDocument);
+    // make sure svg is loaded;Get the SVG document inside the Object tag
+    svgDoc = a.contentDocument;
+    // Get one of the SVG items by ID;
+    t1 = svgDoc.getElementById("1");
+    t2 = svgDoc.getElementById("2");
+    t3 = svgDoc.getElementById("3");
+    t4 = svgDoc.getElementById("4");
+    t5 = svgDoc.getElementById("5");
+    t6 = svgDoc.getElementById("6");
+    t7 = svgDoc.getElementById("7");
+
+    t1.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[1] === "") {
+          seleted(t1, selection[0]);
+          selection[0] = !selection[0];
+          validSubmit();
+        }
+      },
+      false
+    );
+    t2.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[2] === "") {
+          seleted(t2, selection[1]);
+          selection[1] = !selection[1];
+          validSubmit();
+        }
+      },
+      false
+    );
+    t3.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[3] === "") {
+          seleted(t3, selection[2]);
+          selection[2] = !selection[2];
+          validSubmit();
+        }
+      },
+      false
+    );
+    t4.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[4] === "") {
+          seleted(t4, selection[3]);
+          selection[3] = !selection[3];
+          validSubmit();
+        }
+      },
+      false
+    );
+    t5.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[5] === "") {
+          seleted(t5, selection[4]);
+          selection[4] = !selection[4];
+          validSubmit();
+        }
+      },
+      false
+    );
+    t6.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[6] === "") {
+          seleted(t6, selection[5]);
+          selection[5] = !selection[5];
+          validSubmit();
+        }
+      },
+      false
+    );
+    t7.addEventListener(
+      "click",
+      function (event) {
+        if (annotated[7] === "") {
+          seleted(t7, selection[6]);
+          selection[6] = !selection[6];
+          validSubmit();
+        }
+      },
+      false
+    );
+
+    // start BLOCK 1
     wholeTrial();
-    //pieceTrial();
   };
 }
 
 /** Reset variables. */
 function reset() {
   // reset params
+  isPieceTrial = false;
   selection = [false, false, false, false, false, false, false];
   annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
   ann_to_idx = {};
