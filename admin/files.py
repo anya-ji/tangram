@@ -21,12 +21,13 @@ files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 i=0
 for f in files:
   # initial_files[f.strip('.svg')] = 0
-  db.collection(u'files').document(f).set({
-    'name': f.strip('.svg'),
-    'count': 0
-  })
-  print(i,":",f)
-  i+=1
+  if f != 'check.py':
+    db.collection(u'files').document(f).set({
+      'name': f.strip('.svg'),
+      'count': 0
+    })
+    print(i,":",f)
+    i+=1
 
 
 # doc_ref = db.collection(u'files').document(u'files')
