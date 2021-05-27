@@ -12,6 +12,7 @@ var metadata = {}; // maps list item id to metadata
 var lastid = 0;
 var piece_to_color = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" }; // current color of piece
 var piece_to_last_id = { 1: -1, 2: -1, 3: -1, 4: -1, 5: -1, 6: -1, 7: -1 }; // last operation id on piece
+var last_id_to_piece = {} // operation id to piece ids
 
 const colors = {
   1: "red",

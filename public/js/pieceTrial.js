@@ -22,10 +22,10 @@ next.addEventListener("click", function (e) {
   //annotation
   var uploadData = {};
 
-  console.log("upload:", wholeAnnotation);
   uploadData["whole-annotation"] = wholeAnnotation;
   uploadData["piece-annotation"] = annotated;
   uploadData["metadata"] = metadata;
+  console.log(uploadData);
   /* [updateField]
       user_id: {
         annotated: 1-7
@@ -43,16 +43,16 @@ next.addEventListener("click", function (e) {
   db.collection("annotations")
     .doc(fileName)
     .set(updateField, { merge: true })
-    .then(() => {
-      console.log("Annotation added!");
-    })
+    // .then(() => {
+    //   console.log("Annotation added!");
+    // })
     .then(() => {
       db.collection("users")
         .doc(user_id)
         .set(userField, { merge: true })
-        .then(() => {
-          console.log("User updated!");
-        })
+        // .then(() => {
+        //   console.log("User updated!");
+        // })
         .catch((error) => {
           console.error("Error adding document: ", error);
         })
@@ -63,8 +63,8 @@ next.addEventListener("click", function (e) {
               count: firebase.firestore.FieldValue.increment(1),
             })
             .then(() => {
-              console.log("File count updated!");
-              console.log("Ready for next tangram...");
+              // console.log("File count updated!");
+              // console.log("Ready for next tangram...");
 
               reset();
 
@@ -126,6 +126,11 @@ document.addEventListener("keyup", (event) => {
 
 /** MAIN ANNOTATION */
 function annotate(ann) {
+  // Submit button
+  var bt = document.getElementById("submit");
+  // idk button
+  var idk = document.getElementById("idk");
+
   if (!selection.every((v) => v === false)) {
     //selected pieces
     var indices = selection.reduce(
@@ -209,8 +214,9 @@ function annotate(ann) {
     // clear inputs
     document.getElementById("annotate").value = "";
     bt.disabled = true;
+    idk.disabled = true;
 
-    logging();
+    // logging();
 
     // increment operations
     lastid += 1;
@@ -231,7 +237,15 @@ bt.addEventListener(
   },
   false
 );
-// }
+
+// idk button
+var idk = document.getElementById("idk");
+
+idk.addEventListener("click", function (event) {
+  // annotation
+  var ann = document.getElementById("annotate").value;
+  annotate("UNKNOWN");
+});
 
 /** Select a piece */
 function seleted(t, sel) {
@@ -255,11 +269,22 @@ function validSubmit() {
       text.value = "";
       text.disabled = true;
     }
+    //submit button
     var bt = document.getElementById("submit");
+
     if (text.value.length === 0 || selection.every((v) => v === false)) {
       bt.disabled = true;
     } else {
       bt.disabled = false;
+    }
+
+    //idk button
+    var idk = document.getElementById("idk");
+
+    if (selection.every((v) => v === false)) {
+      idk.disabled = true;
+    } else {
+      idk.disabled = false;
     }
   }
 }

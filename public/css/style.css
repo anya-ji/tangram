@@ -145,6 +145,10 @@
   background-color: #4caf50;
 }
 
+.idk{
+  background-color: #ffb700;
+}
+
 .instructions-bt {
   background-color: #4caf50;
   display: none; /* hide for block 1*/
@@ -154,7 +158,3 @@
   background-color: #4c7caf;
 }
 
-.duplicate {
-  background-color: #f99f04;
-  visibility: hidden;
-}
