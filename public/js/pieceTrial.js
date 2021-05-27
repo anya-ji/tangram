@@ -126,6 +126,11 @@ document.addEventListener("keyup", (event) => {
 
 /** MAIN ANNOTATION */
 function annotate(ann) {
+  // preprocess annotation: lowercase, no special char
+  if (ann !== "UNKNOWN") {
+    ann = ann.toLowerCase()
+    ann = ann.replace(/[^a-zA-Z0-9]/g, "")
+  }
   // Submit button
   var bt = document.getElementById("submit");
   // idk button
@@ -138,7 +143,7 @@ function annotate(ann) {
       []
     );
 
-    console.log("selected pieces: " + indices);
+    // console.log("selected pieces: " + indices);
     // annotation color
     var color = colors[indices[0]];
     const old_ann_idx = ann_to_idx[ann];

@@ -20,7 +20,10 @@ var bt = document.getElementById("continue");
 
 bt.addEventListener("click", function (e) {
   var text = document.getElementById("annotate-whole");
-  wholeAnnotation = text.value;
+  var input = text.value.toLowerCase();
+  input = input.replace(/[^a-zA-Z0-9]/g, "");
+  wholeAnnotation = input;
+
   // clear inputs
   text.value = "";
   // hide output interface
