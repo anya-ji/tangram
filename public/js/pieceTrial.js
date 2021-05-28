@@ -10,6 +10,7 @@ function checkDone() {
     }
   });
   if (done) {
+    document.getElementById("next-area").style.display = "block";
     next.disabled = false;
   }
 }

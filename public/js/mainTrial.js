@@ -37,7 +37,6 @@ var t7 = null;
 window.onload = function () {
   var url = window.location.href;
   const queryString = window.location.search;
-  console.log(queryString);
 
   if (queryString === "") {
     // Get initial tangram
@@ -52,7 +51,6 @@ window.onload = function () {
           var url = window.location.href;
           newUrl = url + "?tangram=" + doc.id;
           window.location.href = newUrl;
-          console.log(window.location.href, newUrl);
           //start trial
           startTrial(doc.id);
         });

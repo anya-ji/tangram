@@ -31,9 +31,9 @@ bt.addEventListener("click", function (e) {
   // BLOCK 2
   // pieceTrial();
   isPieceTrial = true;
-  // show instruction & next
+  // show instruction 
   document.getElementById("instructions").style.display = "block";
-  document.getElementById("next-area").style.display = "block";
+  // document.getElementById("next-area").style.display = "block";
   // show output interface
   document.getElementById("piece").style.display = "block";
 });

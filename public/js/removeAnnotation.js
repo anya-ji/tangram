@@ -23,6 +23,7 @@ window.remove = function (ann, id) {
   // disable next
   var next = document.getElementById("next");
   next.disabled = true;
+  document.getElementById("next-area").style.display = "none";
 
   logging();
 };
