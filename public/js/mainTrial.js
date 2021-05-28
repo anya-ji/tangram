@@ -12,7 +12,7 @@ var metadata = {}; // maps list item id to metadata
 var lastid = 0;
 var piece_to_color = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" }; // current color of piece
 var piece_to_last_id = { 1: -1, 2: -1, 3: -1, 4: -1, 5: -1, 6: -1, 7: -1 }; // last operation id on piece
-var last_id_to_piece = {} // operation id to piece ids
+var last_id_to_piece = {}; // operation id to piece ids
 
 const colors = {
   1: "red",
@@ -35,25 +35,57 @@ var t7 = null;
 
 /** MAIN TRIAL */
 window.onload = function () {
-  // Get initial tangram
-  db.collection("files")
-    .orderBy("count")
-    .limit(1)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log("Next tangram: ", doc.id);
-        startTrial(doc.id);
+  var url = window.location.href;
+  const queryString = window.location.search;
+  console.log(queryString);
+
+  if (queryString === "") {
+    // Get initial tangram
+    db.collection("files")
+      .orderBy("count")
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log("Next tangram: ", doc.id);
+          //set url
+          var url = window.location.href;
+          newUrl = url + "?tangram=" + doc.id;
+          window.location.href = newUrl;
+          console.log(window.location.href, newUrl);
+          //start trial
+          startTrial(doc.id);
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
       });
-    })
-    .catch((error) => {
-      console.log("Error getting documents: ", error);
-    });
+  } else {
+    // fetch requested tangram
+    const urlParams = new URLSearchParams(queryString);
+    var tangramFile = urlParams.get("tangram");
+    db.collection("files")
+      .doc(tangramFile)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          console.log("Next tangram: ", doc.id);
+          //start trial
+          startTrial(doc.id);
+        } else {
+          console.log("Tangram file doesn't exist!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  }
 };
 
 /** Prepare and start trial. */
 function startTrial(id) {
   file = id;
+
   // Get the Object by ID
   var a = document.getElementById("tangramObj");
   a.setAttribute("data", "assets/" + file);

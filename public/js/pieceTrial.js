@@ -88,6 +88,12 @@ next.addEventListener("click", function (e) {
                     console.log("Next tangram: ", doc.id);
                     // hide output interface
                     document.getElementById("piece").style.display = "none";
+                    //set url
+                    var url = window.location.href;
+                    separator = url.indexOf("=");
+                    newUrl = url.substring(0, separator + 1) + doc.id;
+                    window.location.href = newUrl;
+                    //start new trial
                     startTrial(doc.id);
                   });
                 })
@@ -128,8 +134,8 @@ document.addEventListener("keyup", (event) => {
 function annotate(ann) {
   // preprocess annotation: lowercase, no special char
   if (ann !== "UNKNOWN") {
-    ann = ann.toLowerCase()
-    ann = ann.replace(/[^a-zA-Z0-9]/g, "")
+    ann = ann.toLowerCase();
+    ann = ann.replace(/[^a-zA-Z0-9]/g, "");
   }
   // Submit button
   var bt = document.getElementById("submit");
