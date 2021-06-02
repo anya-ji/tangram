@@ -1,7 +1,9 @@
 var db = firebase.firestore();
 var storageRef = firebase.storage().ref();
-var user_id = "userID-0";
 var file = "";
+var assignmentId = "";
+var hitId = "";
+var workerId = "";
 
 var isPieceTrial = false;
 var wholeAnnotation = "";
@@ -35,33 +37,13 @@ var t7 = null;
 
 /** MAIN TRIAL */
 window.onload = function () {
-  var url = window.location.href;
   const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  var tangramFile = urlParams.get("tangram");
 
-  if (queryString === "") {
-    // Get initial tangram
-    db.collection("files")
-      .orderBy("count")
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log("Next tangram: ", doc.id);
-          //set url
-          var url = window.location.href;
-          newUrl = url + "?tangram=" + doc.id;
-          window.location.href = newUrl;
-          //start trial
-          startTrial(doc.id);
-        });
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
-  } else {
+  if (tangramFile) {
+    // has tangram in url
     // fetch requested tangram
-    const urlParams = new URLSearchParams(queryString);
-    var tangramFile = urlParams.get("tangram");
     db.collection("files")
       .doc(tangramFile)
       .get()
@@ -76,6 +58,27 @@ window.onload = function () {
       })
       .catch((error) => {
         console.log("Error getting document:", error);
+      });
+  } else {
+    // no tangram in url
+    // Get initial tangram
+    db.collection("files")
+      .orderBy("count")
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log("Tangram: ", doc.id);
+          //set url
+          assignmentId = urlParams.get("assignmentId");
+          hitId = urlParams.get("hitId");
+          workerId = urlParams.get("workerId");
+          //start trial
+          startTrial(doc.id);
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
       });
   }
 };
@@ -221,4 +224,58 @@ function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
+}
+
+/** Select a piece */
+function seleted(t, sel) {
+  if (isPieceTrial) {
+    if (!sel) {
+      t.setAttribute("fill", "gray");
+    } else {
+      t.setAttribute("fill", "lightgray");
+    }
+  }
+}
+
+/** Check if it's a valid annotation. */
+function validSubmit() {
+  if (isPieceTrial) {
+    var text = document.getElementById("annotate");
+    if (!selection.every((v) => v === false)) {
+      text.disabled = false;
+      text.focus();
+    } else {
+      text.value = "";
+      text.disabled = true;
+    }
+    //submit button
+    var bt = document.getElementById("submit");
+
+    if (text.value.length === 0 || selection.every((v) => v === false)) {
+      bt.disabled = true;
+    } else {
+      bt.disabled = false;
+    }
+
+    //idk button
+    var idk = document.getElementById("idk");
+
+    if (selection.every((v) => v === false)) {
+      idk.disabled = true;
+    } else {
+      idk.disabled = false;
+    }
+  }
+}
+
+/** Console logs */
+function logging() {
+  console.log(
+    selection,
+    annotated,
+    ann_to_idx,
+    metadata,
+    piece_to_color,
+    piece_to_last_id
+  );
 }

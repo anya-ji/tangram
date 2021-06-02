@@ -7,7 +7,7 @@ window.stoppedTyping = function () {
     // empty input or no selection
     bt.disabled = true;
     bt.setAttribute("class", "button submit");
-    bt.innerText = "Submit";
+    bt.innerText = "Annotate";
     // idk.disabled = true;
   } else {
     bt.disabled = false;
@@ -19,7 +19,7 @@ window.stoppedTyping = function () {
     } else {
       //new annotation
       bt.setAttribute("class", "button submit");
-      bt.innerText = "Submit";
+      bt.innerText = "Annotate";
       // idk.disabled = false;
     }
   }

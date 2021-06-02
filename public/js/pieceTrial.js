@@ -16,7 +16,7 @@ function checkDone() {
 }
 
 /** UPLOAD DATA*/
-next.addEventListener("click", function (e) {
+next.addEventListener("click", async (e) => {
   next.disabled = true;
 
   var fileName = file.replace(".svg", "");
@@ -26,34 +26,35 @@ next.addEventListener("click", function (e) {
   uploadData["whole-annotation"] = wholeAnnotation;
   uploadData["piece-annotation"] = annotated;
   uploadData["metadata"] = metadata;
+  uploadData["timestamp"] = firebase.firestore.Timestamp.now();
   console.log(uploadData);
   /* [updateField]
-      user_id: {
+      workerId: {
         annotated: 1-7
         metadata:
     }*/
   var updateField = {};
-  updateField[user_id] = uploadData;
+  updateField[workerId] = uploadData;
 
   var userField = {};
   userField[fileName] = uploadData;
+  userField["assignmentId"] = assignmentId;
+  userField["hitId"] = hitId;
+  userField["workerId"] = workerId;
 
   //1. add to annotations
   //2. increment count in files
   //3. add to user's annotations
+
+  //firebase
   db.collection("annotations")
     .doc(fileName)
     .set(updateField, { merge: true })
-    // .then(() => {
-    //   console.log("Annotation added!");
-    // })
+
     .then(() => {
       db.collection("users")
-        .doc(user_id)
+        .doc(workerId)
         .set(userField, { merge: true })
-        // .then(() => {
-        //   console.log("User updated!");
-        // })
         .catch((error) => {
           console.error("Error adding document: ", error);
         })
@@ -63,44 +64,71 @@ next.addEventListener("click", function (e) {
             .update({
               count: firebase.firestore.FieldValue.increment(1),
             })
-            .then(() => {
-              // console.log("File count updated!");
-              // console.log("Ready for next tangram...");
-
+            .then(async () => {
               reset();
 
               Swal.fire({
                 title: "<strong>Submitted!</strong>",
                 icon: "success",
-                html: "Ready to annontate the next tangram.",
-                showCloseButton: true,
+                html: "Thank you for completing the task!",
+                showCloseButton: false,
                 focusConfirm: false,
                 showConfirmButton: false,
-                timer: 2000,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
               });
 
+              //MTurk
+              const urlParams = new URLSearchParams(window.location.search);
+
+              // create the form element and point it to the correct endpoint
+              const form = document.createElement("form");
+              form.action = new URL(
+                "mturk/externalSubmit",
+                urlParams.get("turkSubmitTo")
+              ).href;
+              form.method = "post";
+
+              // attach the assignmentId
+              const inputAssignmentId = document.createElement("input");
+              inputAssignmentId.name = "assignmentId";
+              inputAssignmentId.value = urlParams.get("assignmentId");
+              inputAssignmentId.hidden = true;
+              form.appendChild(inputAssignmentId);
+
+              // need one additional field asside from assignmentId
+              const inputCoordinates = document.createElement("input");
+              inputCoordinates.name = "foo";
+              inputCoordinates.value = "bar";
+              inputCoordinates.hidden = true;
+              form.appendChild(inputCoordinates);
+
+              // attach the form to the HTML document and trigger submission
+              document.body.appendChild(form);
+              form.submit();
+
               //new tangram
-              db.collection("files")
-                .orderBy("count")
-                .limit(1)
-                .get()
-                .then((querySnapshot) => {
-                  querySnapshot.forEach((doc) => {
-                    console.log("Next tangram: ", doc.id);
-                    // hide output interface
-                    document.getElementById("piece").style.display = "none";
-                    //set url
-                    var url = window.location.href;
-                    separator = url.indexOf("=");
-                    newUrl = url.substring(0, separator + 1) + doc.id;
-                    window.location.href = newUrl;
-                    //start new trial
-                    startTrial(doc.id);
-                  });
-                })
-                .catch((error) => {
-                  console.log("Error getting documents: ", error);
-                });
+              // db.collection("files")
+              //   .orderBy("count")
+              //   .limit(1)
+              //   .get()
+              //   .then((querySnapshot) => {
+              //     querySnapshot.forEach((doc) => {
+              //       console.log("Next tangram: ", doc.id);
+              //       // hide output interface
+              //       document.getElementById("piece").style.display = "none";
+              //       //set url
+              //       var url = window.location.href;
+              //       separator = url.indexOf("=");
+              //       newUrl = url.substring(0, separator + 1) + doc.id;
+              //       window.location.href = newUrl;
+              //       //start new trial
+              //       startTrial(doc.id);
+              //     });
+              //   })
+              //   .catch((error) => {
+              //     console.log("Error getting documents: ", error);
+              //   });
             })
             .catch((error) => {
               console.error("Error adding document: ", error);
@@ -110,8 +138,6 @@ next.addEventListener("click", function (e) {
     .catch((error) => {
       console.error("Error adding document: ", error);
     });
-
-  // TODO: if done all tangrams
 });
 
 // Submit button
@@ -150,7 +176,6 @@ function annotate(ann) {
       []
     );
 
-    // console.log("selected pieces: " + indices);
     // annotation color
     var color = colors[indices[0]];
     const old_ann_idx = ann_to_idx[ann];
@@ -198,7 +223,7 @@ function annotate(ann) {
     metadata[lastid] = {
       annotation: ann,
       pieces: ann_to_idx[ann],
-      timestamp: Date.now(),
+      timestamp: firebase.firestore.Timestamp.now(),
       final: true,
     };
 
@@ -258,57 +283,3 @@ idk.addEventListener("click", function (event) {
   var ann = document.getElementById("annotate").value;
   annotate("UNKNOWN");
 });
-
-/** Select a piece */
-function seleted(t, sel) {
-  if (isPieceTrial) {
-    if (!sel) {
-      t.setAttribute("fill", "gray");
-    } else {
-      t.setAttribute("fill", "lightgray");
-    }
-  }
-}
-
-/** Check if it's a valid annotation. */
-function validSubmit() {
-  if (isPieceTrial) {
-    var text = document.getElementById("annotate");
-    if (!selection.every((v) => v === false)) {
-      text.disabled = false;
-      text.focus();
-    } else {
-      text.value = "";
-      text.disabled = true;
-    }
-    //submit button
-    var bt = document.getElementById("submit");
-
-    if (text.value.length === 0 || selection.every((v) => v === false)) {
-      bt.disabled = true;
-    } else {
-      bt.disabled = false;
-    }
-
-    //idk button
-    var idk = document.getElementById("idk");
-
-    if (selection.every((v) => v === false)) {
-      idk.disabled = true;
-    } else {
-      idk.disabled = false;
-    }
-  }
-}
-
-/** Console logs */
-function logging() {
-  console.log(
-    selection,
-    annotated,
-    ann_to_idx,
-    metadata,
-    piece_to_color,
-    piece_to_last_id
-  );
-}
