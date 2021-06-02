@@ -85,7 +85,7 @@ window.onload = function () {
 
 /** Prepare and start trial. */
 function startTrial(id) {
-  file = id;
+  file = "gram4.svg";
 
   // Get the Object by ID
   var a = document.getElementById("tangramObj");
