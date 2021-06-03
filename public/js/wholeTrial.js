@@ -20,8 +20,8 @@ var bt = document.getElementById("continue");
 
 bt.addEventListener("click", function (e) {
   var text = document.getElementById("annotate-whole");
-  var input = text.value.toLowerCase();
-  input = input.replace(/[^a-zA-Z0-9]/g, "");
+  var input = text.value.toLowerCase().trim();
+  input = input.replace(/[^a-zA-Z0-9 ]/g, "");
   wholeAnnotation = input;
 
   // clear inputs
@@ -31,7 +31,7 @@ bt.addEventListener("click", function (e) {
   // BLOCK 2
   // pieceTrial();
   isPieceTrial = true;
-  // show instruction 
+  // show instruction
   document.getElementById("instructions").style.display = "block";
   // document.getElementById("next-area").style.display = "block";
   // show output interface

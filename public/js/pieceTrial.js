@@ -22,20 +22,16 @@ next.addEventListener("click", async (e) => {
   var fileName = file.replace(".svg", "");
   //annotation
   var uploadData = {};
-
   uploadData["whole-annotation"] = wholeAnnotation;
   uploadData["piece-annotation"] = annotated;
   uploadData["metadata"] = metadata;
   uploadData["timestamp"] = firebase.firestore.Timestamp.now();
   console.log(uploadData);
-  /* [updateField]
-      workerId: {
-        annotated: 1-7
-        metadata:
-    }*/
+
   var updateField = {};
   updateField[workerId] = uploadData;
 
+  //user
   var userField = {};
   userField[fileName] = uploadData;
   userField["assignmentId"] = assignmentId;
@@ -159,10 +155,10 @@ document.addEventListener("keyup", (event) => {
 
 /** MAIN ANNOTATION */
 function annotate(ann) {
-  // preprocess annotation: lowercase, no special char
+  // preprocess annotation: lowercase, no special char except space, no leading/trailing space
   if (ann !== "UNKNOWN") {
-    ann = ann.toLowerCase();
-    ann = ann.replace(/[^a-zA-Z0-9]/g, "");
+    ann = ann.toLowerCase().trim();
+    ann = ann.replace(/[^a-zA-Z0-9 ]/g, "");
   }
   // Submit button
   var bt = document.getElementById("submit");

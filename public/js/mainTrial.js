@@ -85,7 +85,7 @@ window.onload = function () {
 
 /** Prepare and start trial. */
 function startTrial(id) {
-  file = "gram4.svg";
+  file = id;
 
   // Get the Object by ID
   var a = document.getElementById("tangramObj");
@@ -251,7 +251,9 @@ function validSubmit() {
     //submit button
     var bt = document.getElementById("submit");
 
-    if (text.value.length === 0 || selection.every((v) => v === false)) {
+    var ann = text.value.replace(/[^a-zA-Z0-9]/g, ""); // only chars, no space;
+
+    if (ann.length === 0 || selection.every((v) => v === false)) {
       bt.disabled = true;
     } else {
       bt.disabled = false;

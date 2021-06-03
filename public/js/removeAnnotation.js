@@ -25,5 +25,5 @@ window.remove = function (ann, id) {
   next.disabled = true;
   document.getElementById("next-area").style.display = "none";
 
-  logging();
+  // logging();
 };

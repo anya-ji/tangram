@@ -36,7 +36,3 @@ for f in files:
     i+=1
     if i>20:
       break
-
-
-# doc_ref = db.collection(u'files').document(u'files')
-# doc_ref.set(initial_files)
