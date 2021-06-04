@@ -26,7 +26,10 @@
     <script src="js/instructions.js"></script>
     <script src="js/stoppedTyping.js"></script>
     <script src="js/removeAnnotation.js"></script>
-    <script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
+    <script
+      type="text/javascript"
+      src="https://s3.amazonaws.com/mturk-public/externalHIT_v1.js"
+    ></script>
   </head>
 
   <body>
@@ -39,9 +42,15 @@
     </button>
 
     <div class="left">
-      <div class="image">
-        <object class="tangram" id="tangramObj" data="" type="image/svg+xml" height="100%"></object>
-      </div>
+      <!-- <div class="image"> -->
+      <object
+        class="tangram"
+        id="tangramObj"
+        data=""
+        type="image/svg+xml"
+        height="100%"
+      ></object>
+      <!-- </div> -->
     </div>
 
     <div class="whole-layout" id="whole">
@@ -55,7 +64,9 @@
             onkeyup="stoppedTypingWhole()"
             autocomplete="off"
           />
-          <button id="continue" class="button submit" disabled>Continue</button>
+          <button id="continue" class="button submit" disabled="true">
+            Continue
+          </button>
           <a class="suggestion"> or hit ENTER</a>
         </div>
       </div>

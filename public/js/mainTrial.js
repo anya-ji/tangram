@@ -5,6 +5,7 @@ var assignmentId = "";
 var hitId = "";
 var workerId = "";
 var submitted = false;
+var tangramFile = null;
 
 var isPieceTrial = false;
 var wholeAnnotation = "";
@@ -40,7 +41,7 @@ var t7 = null;
 window.onload = function () {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  var tangramFile = urlParams.get("tangram");
+  tangramFile = urlParams.get("tangram");
   assignmentId = urlParams.get("assignmentId");
   hitId = urlParams.get("hitId");
   workerId = urlParams.get("workerId");
@@ -48,31 +49,28 @@ window.onload = function () {
   if (assignmentId && workerId) {
     // with MTurk assignmentId
     // check if the worker has unfinished work
-    const userRef = db.collection("users").doc(workerId);
+    const assignmentRef = db.collection("assignments").doc(assignmentId);
 
-    userRef.get().then((docSnapshot) => {
+    assignmentRef.get().then((docSnapshot) => {
       if (docSnapshot.exists) {
         // has claimed unfinished tangram
-        userRef.get().then((doc) => {
+        assignmentRef.get().then((doc) => {
           var data = doc.data();
           var unfinished = data["unfinished"];
+          var unfinishedFile = data["file"];
           var lastClaimed = data["lastClaimed"];
-          if (
-            unfinished === null ||
-            Date.now() - lastClaimed.toMillis() >= 86400000
-          ) {
+          if (!unfinished || Date.now() - lastClaimed.toMillis() >= 3600000) {
             //doesn't have unfinished or unfinished tangram already expired
             fetch();
           } else {
             // continue working on unfinished tangram
-            console.log("Tangram: ", unfinished);
-            console.log("here2");
+            console.log("Tangram: ", unfinishedFile);
             //start trial
-            startTrial(unfinished);
+            startTrial(unfinishedFile);
           }
         });
       } else {
-        // new worker
+        // new assignment
         fetch();
       }
     });
@@ -80,7 +78,7 @@ window.onload = function () {
     // ** for testing
     // has tangram in url
     // fetch requested tangram
-    filesRef
+    db.collection("files")
       .doc(tangramFile)
       .get()
       .then((doc) => {
@@ -97,23 +95,23 @@ window.onload = function () {
       });
   } else {
     // ** for testing
-    //random tangram
-    // filesRef
-    //   .orderBy("count")
-    //   .limit(1)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       console.log("Tangram: ", doc.id);
-    //       //start trial
-    //       startTrial(doc.id);
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error getting documents: ", error);
-    //   });
+    // random tangram / MTurk preview
+    db.collection("files")
+      .orderBy("count")
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log("Tangram: ", doc.id);
+          //start trial
+          startTrial(doc.id);
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
 
-    alert("require parameter [tangram] or [assignmentId] and [workerId]");
+    // alert("require parameter [tangram] or [assignmentId] and [workerId]");
   }
 };
 
@@ -126,8 +124,8 @@ function fetch() {
     .where(
       "lastClaimed",
       "<=",
-      firebase.firestore.Timestamp.fromMillis(Date.now() - 86400000)
-    ) // claimed a day ago
+      firebase.firestore.Timestamp.fromMillis(Date.now() - 3600000)
+    ) // claimed an hour ago
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -157,13 +155,15 @@ function fetch() {
                 { merge: true }
               )
               .then(() => {
-                //add to user unfinished
-                db.collection("users")
-                  .doc(workerId)
+                //add to unfinished assignments
+                db.collection("assignments")
+                  .doc(assignmentId)
                   .set(
                     {
-                      unfinished: file,
+                      unfinished: true,
+                      file: file,
                       lastClaimed: firebase.firestore.Timestamp.now(),
+                      workerId: workerId,
                     },
                     { merge: true }
                   )
@@ -345,6 +345,7 @@ function validSubmit() {
     } else {
       text.value = "";
       text.disabled = true;
+      text.blur();
     }
     //submit button
     var bt = document.getElementById("submit");
