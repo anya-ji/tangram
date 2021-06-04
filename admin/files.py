@@ -30,7 +30,7 @@ for f in files:
       'count': 0,
       'available': True,
       'lastClaimed': datetime.datetime.now(),
-      'completedWorkers': []
+      # 'completedWorkers': []
     })
     print(i,":",f)
     i+=1

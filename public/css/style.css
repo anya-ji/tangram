@@ -82,7 +82,7 @@
 
 .image {
   position: fixed;
-  top: 5%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, 0);
   width: auto;

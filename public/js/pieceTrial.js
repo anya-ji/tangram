@@ -20,6 +20,7 @@ next.addEventListener("click", async (e) => {
   next.disabled = true;
 
   var fileName = file.replace(".svg", "");
+
   //annotation
   var uploadData = {};
   uploadData["whole-annotation"] = wholeAnnotation;
@@ -37,6 +38,8 @@ next.addEventListener("click", async (e) => {
   userField["assignmentId"] = assignmentId;
   userField["hitId"] = hitId;
   userField["workerId"] = workerId;
+  userField["unfinished"] = null;
+  userField["lastClaimed"] = null;
 
   //1. add to annotations
   //2. increment count in files
@@ -59,8 +62,11 @@ next.addEventListener("click", async (e) => {
             .doc(file)
             .update({
               count: firebase.firestore.FieldValue.increment(1),
+              available: true,
+              completedWorkers:
+                firebase.firestore.FieldValue.arrayUnion(workerId),
             })
-            .then(async () => {
+            .then(() => {
               reset();
 
               Swal.fire({
@@ -74,34 +80,36 @@ next.addEventListener("click", async (e) => {
                 allowEscapeKey: false,
               });
 
-              //MTurk
-              const urlParams = new URLSearchParams(window.location.search);
+              //MTurk submit
+              if (hitId) {
+                const urlParams = new URLSearchParams(window.location.search);
 
-              // create the form element and point it to the correct endpoint
-              const form = document.createElement("form");
-              form.action = new URL(
-                "mturk/externalSubmit",
-                urlParams.get("turkSubmitTo")
-              ).href;
-              form.method = "post";
+                // create the form element and point it to the correct endpoint
+                const form = document.createElement("form");
+                form.action = new URL(
+                  "mturk/externalSubmit",
+                  urlParams.get("turkSubmitTo")
+                ).href;
+                form.method = "post";
 
-              // attach the assignmentId
-              const inputAssignmentId = document.createElement("input");
-              inputAssignmentId.name = "assignmentId";
-              inputAssignmentId.value = urlParams.get("assignmentId");
-              inputAssignmentId.hidden = true;
-              form.appendChild(inputAssignmentId);
+                // attach the assignmentId
+                const inputAssignmentId = document.createElement("input");
+                inputAssignmentId.name = "assignmentId";
+                inputAssignmentId.value = urlParams.get("assignmentId");
+                inputAssignmentId.hidden = true;
+                form.appendChild(inputAssignmentId);
 
-              // need one additional field asside from assignmentId
-              const inputCoordinates = document.createElement("input");
-              inputCoordinates.name = "foo";
-              inputCoordinates.value = "bar";
-              inputCoordinates.hidden = true;
-              form.appendChild(inputCoordinates);
+                // need one additional field asside from assignmentId
+                const inputCoordinates = document.createElement("input");
+                inputCoordinates.name = "foo";
+                inputCoordinates.value = "bar";
+                inputCoordinates.hidden = true;
+                form.appendChild(inputCoordinates);
 
-              // attach the form to the HTML document and trigger submission
-              document.body.appendChild(form);
-              form.submit();
+                // attach the form to the HTML document and trigger submission
+                document.body.appendChild(form);
+                form.submit();
+              }
 
               //new tangram
               // db.collection("files")
