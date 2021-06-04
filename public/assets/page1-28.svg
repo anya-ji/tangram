@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg baseProfile="full" height="100%" version="1.1" viewBox="0 0 351.5275246792191 366.7975105768082" width="100%" xmlns="http:stroke = ">white" strokewidth = "1" /stroke = "white" strokewidth = "1" /www.w3.orgstroke = "white" strokewidth = "1" /2000stroke = "white" strokewidth = "1" /svg" xmlns:ev="http:stroke = "white" strokewidth = "1" /stroke = "white" strokewidth = "1" /www.w3.orgstroke = "white" strokewidth = "1" /2001stroke = "white" strokewidth = "1" /xml-events" xmlns:xlink="http:stroke = "white" strokewidth = "1" /stroke = "white" strokewidth = "1" /www.w3.orgstroke = "white" strokewidth = "1" /1999stroke = "white" strokewidth = "1" /xlink"&gt;
-    <defs stroke="white" strokewidth="1"/>
+<svg baseProfile="full" height="100%" version="1.1" viewBox="0 0 351.5275246792191 366.7975105768082" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs stroke="white" strokewidth="1"/>
 <polygon fill="lightgray" id="1" points="225.66251762801363,178.0 225.66251762801363,89.0 314.66251762801363,89.0 314.66251762801363,178.0" stroke="white" strokewidth="1"/>
-<polygon fill="green" id="2" points="125.86500705120545,240.93250352560273 188.79751057680818,178.0 314.66251762801363,178.0 251.7300141024109,240.93250352560273" stroke="white" strokewidth="1"/>
-<polygon fill="blue" id="3" points="351.5275246792191,89.0 225.66251762801363,89.0 288.59502115361636,26.067496474397267" stroke="white" strokewidth="1"/>
-<polygon fill="yellow" id="4" points="188.79751057680818,303.86500705120545 251.7300141024109,240.93250352560273 125.86500705120545,240.93250352560273" stroke="white" strokewidth="1"/>
-<polygon fill="purple" id="5" points="99.79751057680818,267.0 188.79751057680818,178.0 10.797510576808179,178.0" stroke="white" strokewidth="1"/>
-<polygon fill="pink" id="6" points="188.79751057680818,178.0 10.797510576808179,178.0 10.797510576808179,0.0" stroke="white" strokewidth="1"/>
-<polygon fill="orange" id="7" points="251.7300141024109,366.7975105768082 0.0,366.7975105768082 125.86500705120545,240.93250352560273" stroke="white" strokewidth="1"/></svg>
+<polygon fill="lightgray" id="2" points="125.86500705120545,240.93250352560273 188.79751057680818,178.0 314.66251762801363,178.0 251.7300141024109,240.93250352560273" stroke="white" strokewidth="1"/>
+<polygon fill="lightgray" id="3" points="351.5275246792191,89.0 225.66251762801363,89.0 288.59502115361636,26.067496474397267" stroke="white" strokewidth="1"/>
+<polygon fill="lightgray" id="4" points="188.79751057680818,303.86500705120545 251.7300141024109,240.93250352560273 125.86500705120545,240.93250352560273" stroke="white" strokewidth="1"/>
+<polygon fill="lightgray" id="5" points="99.79751057680818,267.0 188.79751057680818,178.0 10.797510576808179,178.0" stroke="white" strokewidth="1"/>
+<polygon fill="lightgray" id="6" points="188.79751057680818,178.0 10.797510576808179,178.0 10.797510576808179,0.0" stroke="white" strokewidth="1"/>
+<polygon fill="lightgray" id="7" points="251.7300141024109,366.7975105768082 0.0,366.7975105768082 125.86500705120545,240.93250352560273" stroke="white" strokewidth="1"/></svg>
