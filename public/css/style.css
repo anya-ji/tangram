@@ -77,7 +77,7 @@
   top: 5%;
   bottom: 70%;
   left: 5%;
-  right: 50%;
+  right: 30%;
 }
 
 /* .image {
@@ -167,4 +167,20 @@
 
 .add {
   background-color: #4c7caf;
+}
+
+.preview {
+  position: absolute;
+  display: none;
+  top: 0;
+  bottom: 90%;
+  left: 50%;
+  right: 0;
+  transform: translate(-50%, 0);
+}
+
+.preview > p {
+  color: red;
+  font: 20px;
+  font-weight: bold;
 }

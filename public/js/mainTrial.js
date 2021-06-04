@@ -46,8 +46,14 @@ window.onload = function () {
   hitId = urlParams.get("hitId");
   workerId = urlParams.get("workerId");
 
-  if (assignmentId && workerId) {
-    // with MTurk assignmentId
+  if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
+    // MTurk preview
+    document.getElementById("preview").style.display = "block";
+    console.log("Tangram: ", "page1-44.svg");
+    //start trial
+    startTrial("page1-44.svg");
+  } else if (assignmentId && workerId) {
+    // actual workers (will have hitId) or test with assignment and worker ids
     // check if the worker has unfinished work
     const assignmentRef = db.collection("assignments").doc(assignmentId);
 
@@ -75,7 +81,7 @@ window.onload = function () {
       }
     });
   } else if (tangramFile) {
-    // ** for testing
+    // ** for testing specific tangram UI
     // has tangram in url
     // fetch requested tangram
     db.collection("files")
@@ -95,7 +101,7 @@ window.onload = function () {
       });
   } else {
     // ** for testing
-    // random tangram / MTurk preview
+    // random tangram
     db.collection("files")
       .orderBy("count")
       .limit(1)
@@ -110,8 +116,6 @@ window.onload = function () {
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
-
-    // alert("require parameter [tangram] or [assignmentId] and [workerId]");
   }
 };
 

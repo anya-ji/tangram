@@ -21,6 +21,7 @@ next.addEventListener("click", async (e) => {
 
   if (tangramFile) {
     // **for testing specific tangram UI
+    reset();
     Swal.fire({
       title: "<strong>Submitted!</strong>",
       icon: "success",
@@ -31,7 +32,21 @@ next.addEventListener("click", async (e) => {
       allowOutsideClick: false,
       allowEscapeKey: false,
     });
+  } else if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
+    // for preview
+    reset();
+    Swal.fire({
+      title: "<strong>This is a preview</strong>",
+      icon: "info",
+      html: "This is only a preview of the task. Please accept and complete the assignment to receive payment!",
+      showCloseButton: false,
+      focusConfirm: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
   } else {
+    // Working from mturk
     var fileName = file.replace(".svg", "");
 
     //annotation
