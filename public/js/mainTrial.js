@@ -52,8 +52,8 @@ window.onload = function () {
     console.log("Tangram: ", "page1-44.svg");
     //start trial
     startTrial("page1-44.svg");
-  } else if (assignmentId && workerId) {
-    // actual workers (will have hitId) or test with assignment and worker ids
+  } else if (assignmentId && workerId && hitId) {
+    // actual workers
     // check if the worker has unfinished work
     const assignmentRef = db.collection("assignments").doc(assignmentId);
 

@@ -19,19 +19,25 @@ function checkDone() {
 next.addEventListener("click", async (e) => {
   next.disabled = true;
 
-  if (tangramFile) {
-    // **for testing specific tangram UI
+  if (tangramFile || hitId === null) {
+    // **local tests
     reset();
-    Swal.fire({
-      title: "<strong>Submitted!</strong>",
+    const { value: text } = await Swal.fire({
+      title: "<strong>Annotation submitted!</strong>",
       icon: "success",
       html: "Thank you for completing the task!",
+      input: "textarea",
+      inputPlaceholder: "(Optional) Enter your feedback here...",
+      confirmButtonText: "Submit",
+      confirmButtonColor: "#4caf50",
+      showCancelButton: false,
       showCloseButton: false,
       focusConfirm: false,
-      showConfirmButton: false,
+      showConfirmButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
     });
+    console.log(text);
   } else if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
     // for preview
     reset();
@@ -97,16 +103,22 @@ next.addEventListener("click", async (e) => {
                 db.collection("assignments")
                   .doc(assignmentId)
                   .update({ unfinished: false })
-                  .then(() => {
+                  .then(async () => {
                     reset();
 
-                    Swal.fire({
-                      title: "<strong>Submitted!</strong>",
+                    const { value: text } = await Swal.fire({
+                      title: "<strong>Annotation submitted!</strong>",
                       icon: "success",
                       html: "Thank you for completing the task!",
+                      input: "textarea",
+                      inputPlaceholder:
+                        "(Optional) Enter your feedback here...",
+                      confirmButtonText: "Submit",
+                      confirmButtonColor: "#4caf50",
+                      showCancelButton: false,
                       showCloseButton: false,
                       focusConfirm: false,
-                      showConfirmButton: false,
+                      showConfirmButton: true,
                       allowOutsideClick: false,
                       allowEscapeKey: false,
                     });
@@ -133,11 +145,11 @@ next.addEventListener("click", async (e) => {
                       form.appendChild(inputAssignmentId);
 
                       // need one additional field asside from assignmentId
-                      const inputCoordinates = document.createElement("input");
-                      inputCoordinates.name = "foo";
-                      inputCoordinates.value = "bar";
-                      inputCoordinates.hidden = true;
-                      form.appendChild(inputCoordinates);
+                      const inputFeedback = document.createElement("input");
+                      inputFeedback.name = "feedback";
+                      inputFeedback.value = text;
+                      inputFeedback.hidden = true;
+                      form.appendChild(inputFeedback);
 
                       // attach the form to the HTML document and trigger submission
                       document.body.appendChild(form);
