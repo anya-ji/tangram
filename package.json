@@ -47,6 +47,7 @@
     "description": "Check out [my blog post about this](http://ionicabizau.net/blog/31-the-amazing-tangram-square)."
   },
   "dependencies": {
+    "blueimp-md5": "^2.18.0",
     "file-saver": "^2.0.5",
     "firebase": "^8.3.1",
     "http-server": "^0.12.3",

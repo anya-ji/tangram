@@ -44,7 +44,7 @@ window.onload = function () {
   tangramFile = urlParams.get("tangram");
   assignmentId = urlParams.get("assignmentId");
   hitId = urlParams.get("hitId");
-  workerId = urlParams.get("workerId");
+  workerId = md5(urlParams.get("workerId"));
 
   if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
     // MTurk preview
