@@ -29,7 +29,6 @@ bt.addEventListener("click", function (e) {
   // hide output interface
   document.getElementById("whole").style.display = "none";
   // BLOCK 2
-  // pieceTrial();
   isPieceTrial = true;
   // show instruction
   document.getElementById("instructions").style.display = "block";
