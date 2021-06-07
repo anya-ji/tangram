@@ -44,7 +44,7 @@ next.addEventListener("click", async (e) => {
     Swal.fire({
       title: "<strong>This is a preview</strong>",
       icon: "info",
-      html: "This is only a preview of the task. Please accept and complete the assignment to receive payment!",
+      html: "This is only a preview of the task. Please accept and complete the HIT to receive payment!",
       showCloseButton: false,
       focusConfirm: false,
       showConfirmButton: false,
@@ -77,6 +77,7 @@ next.addEventListener("click", async (e) => {
     //1. add to annotations
     //2. increment count in files
     //3. add to user's annotations
+    //4. update assignment status
 
     //firebase
     db.collection("annotations")
