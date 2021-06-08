@@ -302,6 +302,7 @@ function annotate(ann) {
     // clear inputs
     document.getElementById("annotate").value = "";
     bt.disabled = true;
+    bt.innerHTML = 'Annotate <img class="icon"  src="icons/enter.png"/>';
     idk.disabled = true;
     bt.blur();
     idk.blur();

@@ -1,7 +1,7 @@
 .button {
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 15px 28px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
@@ -13,7 +13,7 @@
   background-color: #808080;
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 15px 28px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
@@ -106,8 +106,8 @@
 }
 
 .textbox {
-  height: 5vh;
-  width: 30vh;
+  height: 4vh;
+  width: 20vh;
   padding-left: 10px;
 }
 
@@ -182,4 +182,10 @@
   color: red;
   font: 20px;
   font-weight: bold;
+}
+
+.icon {
+  margin-left: 3px;
+  height: 15px;
+  vertical-align:middle
 }

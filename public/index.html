@@ -27,7 +27,7 @@
     <!-- js -->
     <script src="js/instructions.js"></script>
     <script src="js/stoppedTyping.js"></script>
-    <script src="js/removeAnnotation.js"></script>
+    <script src="js/removeAnnotation.js"></script> 
   </head>
 
   <body>
@@ -47,7 +47,6 @@
     </div>
 
     <div class="left">
-      <!-- <div class="image"> -->
       <object
         class="tangram"
         id="tangramObj"
@@ -55,24 +54,27 @@
         type="image/svg+xml"
         height="100%"
       ></object>
-      <!-- </div> -->
     </div>
 
     <div class="whole-layout" id="whole">
       <div class="output-outer-whole" id="output-outer-whole">
-        <p>Describe the tangram as a whole in a word or phrase:</p>
-        <div>
-          <input
-            id="annotate-whole"
-            class="textbox"
-            type="text"
-            onkeyup="stoppedTypingWhole()"
-            autocomplete="off"
-          />
+        <div></div>
+          <p>
+           This shape, as a whole, looks like 
+            <input
+              id="annotate-whole"
+              class="textbox"
+              type="text"
+              onkeyup="stoppedTypingWhole()"
+              autocomplete="off"
+            />
+            .
           <button id="continue" class="button submit" disabled="true">
             Continue
+            <img class="icon"  src="icons/enter.png"/>
           </button>
-          <a class="suggestion"> or hit ENTER</a>
+          <!-- <a class="suggestion"> or hit ENTER</a> -->
+        </p>
         </div>
       </div>
     </div>
@@ -95,16 +97,19 @@
           autocomplete="off"
           disabled
         />
-        <button id="submit" class="button submit" disabled>Annotate</button>
-        <a class="suggestion"> or hit ENTER</a>
+        <button id="submit" class="button submit" disabled>Annotate <img class="icon" src="icons/enter.png"></button>
+        <!-- <a class="suggestion"> or hit ENTER</a> -->
         <br />
         <button id="idk" class="button idk" disabled>I don't know</button>
       </div>
     </div>
 
     <div class="next-area" id="next-area">
-      <button id="next" class="button next" disabled>Submit</button>
-      <a class="next-suggestion"> or hit SHIFT</a>
+      <button id="next" class="button next" disabled>
+        Submit
+        <img class="icon" src="icons/shift.png"/>
+      </button>
+      <!-- <a class="next-suggestion"> or hit SHIFT</a> -->
     </div>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->

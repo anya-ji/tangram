@@ -4,21 +4,29 @@ window.stoppedTyping = function () {
   var bt = document.getElementById("submit");
   var ann = text.value.replace(/[^a-zA-Z0-9]/g, ""); // only chars, no space;
 
+  var annHTML = 'Annotate <img class="icon" src="icons/enter.png">';
+  var addHTML = 'Add to Group <img class="icon" src="icons/enter.png">';
   if (ann.length === 0 || selection.every((v) => v === false)) {
     // empty input or no selection
     bt.disabled = true;
     bt.setAttribute("class", "button submit");
-    bt.innerText = "Annotate";
+    if (bt.innerHTML != annHTML) {
+      bt.innerHTML = annHTML;
+    }
   } else {
     bt.disabled = false;
     //duplicate
     if (ann_to_idx[text.value]) {
       bt.setAttribute("class", "button add");
-      bt.innerText = "Add to Group";
+      if (bt.innerHTML != addHTML) {
+        bt.innerHTML = addHTML;
+      }
     } else {
       //new annotation
       bt.setAttribute("class", "button submit");
-      bt.innerText = "Annotate";
+      if (bt.innerHTML != annHTML) {
+        bt.innerHTML = annHTML;
+      }
     }
   }
 };
