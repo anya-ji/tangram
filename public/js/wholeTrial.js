@@ -1,7 +1,6 @@
 /** BLOCK 1: WHOLE TANGRAM ANNOTATION */
 function wholeTrial() {
-  // hide instruction & next
-  document.getElementById("instructions").style.display = "none";
+  // hide next
   document.getElementById("next-area").style.display = "none";
   //show output interface
   document.getElementById("whole").style.display = "block";
@@ -28,11 +27,20 @@ bt.addEventListener("click", function (e) {
   text.value = "";
   // hide output interface
   document.getElementById("whole").style.display = "none";
+
   // BLOCK 2
   isPieceTrial = true;
-  // show instruction
-  document.getElementById("instructions").style.display = "block";
-  // document.getElementById("next-area").style.display = "block";
+  // layout
+  document.getElementById("left").style.right = "40%";
+  // deselect all for piece annotation
+  t1.setAttribute("fill", "lightgray");
+  t2.setAttribute("fill", "lightgray");
+  t3.setAttribute("fill", "lightgray");
+  t4.setAttribute("fill", "lightgray");
+  t5.setAttribute("fill", "lightgray");
+  t6.setAttribute("fill", "lightgray");
+  t7.setAttribute("fill", "lightgray");
+  
   // show output interface
   document.getElementById("piece").style.display = "block";
 });

@@ -22,20 +22,23 @@ next.addEventListener("click", async (e) => {
   if (tangramFile || hitId === null) {
     // **local tests
     reset();
+
     const { value: text } = await Swal.fire({
       title: "<strong>Annotation submitted!</strong>",
       icon: "success",
-      html: "Thank you for completing the task!",
-      input: "textarea",
-      inputPlaceholder: "(Optional) Enter your feedback here...",
+      html: 'Thank you for completing the task!<textarea id="swal-input1" class="swal2-input" rows="4" style="font-family: Times, serif; padding-top: 1px;" placeholder="(Optional) Enter your feedback...">',
       confirmButtonText: "Submit",
       confirmButtonColor: "#4caf50",
+      preConfirm: () => {
+        return document.getElementById("swal-input1").value;
+      },
       showCancelButton: false,
       showCloseButton: false,
-      focusConfirm: false,
+      focusConfirm: true,
       showConfirmButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
+      allowEnterKey: true,
     });
     console.log(text);
   } else if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {

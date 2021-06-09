@@ -44,8 +44,8 @@
 .left {
   position: absolute;
   top: 10%;
-  left: 10%;
-  right: 10%;
+  left: 5%;
+  right: 5%;
   bottom: 50%;
   align-items: center;
   z-index: 13;
@@ -99,9 +99,9 @@
 }
 
 .annotation {
-  position: fixed;
-  top: 65%;
-  left: 60%;
+  position: absolute;
+  top: 30%;
+  left: 20%;
   bottom: 0;
 }
 
@@ -111,9 +111,9 @@
   padding-left: 10px;
 }
 
-.suggestion {
+/* .suggestion {
   font-size: 15px;
-}
+} */
 
 .output-outer-whole {
   position: absolute;
@@ -123,29 +123,31 @@
   bottom: 0;
   font-size: 20px;
 }
+
 .output-outer {
-  position: absolute;
-  top: 1%;
-  left: 2%;
-  right: 0;
-  bottom: 2%;
+  position: fixed;
+  top: 10%;
+  left: 60%;
+  right: 5%;
+  bottom: 50%;
   font-size: 20px;
 }
 
 .piece-description {
   position: absolute;
-  top: 0;
+  /* top: 0; */
   left: 2%;
-  right: 50%;
-  bottom: 10%;
+  right: 0;
+  bottom: 90%;
+  font-size: 20px;
 }
 
 .output {
   position: absolute;
-  top: 15%;
+  top: 10%;
   left: 2%;
-  right: 50%;
-  bottom: 10%;
+  right: 0;
+  bottom: 0;
   font-size: 20px;
   background-color: lightgray;
   padding-left: 1vh;

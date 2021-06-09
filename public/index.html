@@ -31,13 +31,13 @@
   </head>
 
   <body>
-    <button
+    <!-- <button
       id="instructions"
       class="button instructions-bt"
       onclick="showTutorial()"
     >
       Instructions
-    </button>
+    </button> -->
 
     <div id="preview" class="preview">
       <p>
@@ -46,7 +46,7 @@
       </p>
     </div>
 
-    <div class="left">
+    <div id="left" class="left">
       <object
         class="tangram"
         id="tangramObj"
@@ -78,28 +78,28 @@
         </div>
       </div>
     </div>
+
     <div class="piece-layout" id="piece">
       <div class="output-outer" id="output-outer">
         <p class="piece-description">
-          Click on tangram pieces to annotate each meaningful part:
+            The parts you annotated:
         </p>
         <div class="output" id="output">
           <ol id="list"></ol>
         </div>
-      </div>
+    </div>
 
       <div class="annotation" id="annotate-outer">
-        <input
+       <p style="font-size: 20px;">The part you selected looks like <input
           id="annotate"
           class="textbox"
           type="text"
           onkeyup="stoppedTyping()"
           autocomplete="off"
           disabled
-        />
+        />.</p>
         <button id="submit" class="button submit" disabled>Annotate <img class="icon" src="icons/enter.png"></button>
         <!-- <a class="suggestion"> or hit ENTER</a> -->
-        <br />
         <button id="idk" class="button idk" disabled>I don't know</button>
       </div>
     </div>

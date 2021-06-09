@@ -206,6 +206,15 @@ function startTrial(id) {
     t6 = svgDoc.getElementById("6");
     t7 = svgDoc.getElementById("7");
 
+    // select all for whole annotation
+    t1.setAttribute("fill", "gray");
+    t2.setAttribute("fill", "gray");
+    t3.setAttribute("fill", "gray");
+    t4.setAttribute("fill", "gray");
+    t5.setAttribute("fill", "gray");
+    t6.setAttribute("fill", "gray");
+    t7.setAttribute("fill", "gray");
+
     t1.addEventListener(
       "click",
       function (event) {
