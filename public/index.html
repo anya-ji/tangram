@@ -4,13 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Tangram</title>
     <!-- icon -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css"
-      type="text/css"
-      media="screen"
-      charset="utf-8"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="js/sweetalert2.all.min.js"></script>
@@ -85,9 +79,19 @@
             The parts you annotated:
         </p>
         <div class="output" id="output">
-          <ol id="list"></ol>
+          <p id="whole-result" class="whole-result"></p>
+          <ul id="list" class="list"></ul>
         </div>
-    </div>
+        <p class="note">
+          <b>Note:</b><br/>
+          1. Delete an annotation by clicking the <b>trash can</b> button next to the annotation.<br/> 
+          2. If you entered the same annotation, the "<b>Annotate</b>" button will become "<b>Add to Group</b>" to add the newly selected piece(s) into the existing annation group. <br/>
+        </p>
+      </div>
+
+      <p class="select-description">
+        Click to select one or multiple pieces that constitute a meaningful part:
+      </p>
 
       <div class="annotation" id="annotate-outer">
        <p style="font-size: 20px;">The part you selected looks like <input

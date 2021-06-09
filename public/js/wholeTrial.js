@@ -40,7 +40,10 @@ bt.addEventListener("click", function (e) {
   t5.setAttribute("fill", "lightgray");
   t6.setAttribute("fill", "lightgray");
   t7.setAttribute("fill", "lightgray");
-  
+
   // show output interface
   document.getElementById("piece").style.display = "block";
+  // add whole result
+  document.getElementById("whole-result").innerHTML =
+    "Your annnotated parts of shape <b>" + wholeAnnotation + "</b>:";
 });

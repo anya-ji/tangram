@@ -24,7 +24,7 @@ next.addEventListener("click", async (e) => {
     reset();
 
     const { value: text } = await Swal.fire({
-      title: "<strong>Annotation submitted!</strong>",
+      title: "<strong>Annotations submitted!</strong>",
       icon: "success",
       html: 'Thank you for completing the task!<textarea id="swal-input1" class="swal2-input" rows="4" style="font-family: Times, serif; padding-top: 1px;" placeholder="(Optional) Enter your feedback...">',
       confirmButtonText: "Submit",
@@ -111,20 +111,21 @@ next.addEventListener("click", async (e) => {
                     reset();
 
                     const { value: text } = await Swal.fire({
-                      title: "<strong>Annotation submitted!</strong>",
+                      title: "<strong>Annotations submitted!</strong>",
                       icon: "success",
-                      html: "Thank you for completing the task!",
-                      input: "textarea",
-                      inputPlaceholder:
-                        "(Optional) Enter your feedback here...",
+                      html: 'Thank you for completing the task!<textarea id="swal-input1" class="swal2-input" rows="4" style="font-family: Times, serif; padding-top: 1px;" placeholder="(Optional) Enter your feedback...">',
                       confirmButtonText: "Submit",
                       confirmButtonColor: "#4caf50",
+                      preConfirm: () => {
+                        return document.getElementById("swal-input1").value;
+                      },
                       showCancelButton: false,
                       showCloseButton: false,
-                      focusConfirm: false,
+                      focusConfirm: true,
                       showConfirmButton: true,
                       allowOutsideClick: false,
                       allowEscapeKey: false,
+                      allowEnterKey: true,
                     });
 
                     //MTurk submit
@@ -285,19 +286,37 @@ function annotate(ann) {
     if (!old_ann_idx) {
       var list = document.getElementById("list");
       var entry = document.createElement("li");
-      entry.appendChild(document.createTextNode(ann));
+      var colorText =
+        color === "deeppink" ? "pink" : color === "gold" ? "yellow" : color;
+      entry.appendChild(
+        document.createTextNode(
+          "The " + colorText + " part is the " + ann + "."
+        )
+      );
       entry.setAttribute("id", lastid);
       entry.setAttribute("style", "color:" + color);
 
       //remove annotation
       var removeButton = document.createElement("button");
-      removeButton.appendChild(document.createTextNode("X"));
+      removeButton.setAttribute("class", "btn");
+      removeButton.innerHTML = '<i class="fa fa-trash"></i>';
+      // removeButton.appendChild(document.createTextNode("X"));
       removeButton.setAttribute(
         "onClick",
         'remove("' + ann + '","' + lastid + '")'
       );
 
-      removeButton.setAttribute("style", "margin-left:2vh");
+      var rbStyle = `
+      margin-left: 1vh;
+      background-color: #de2b2b;
+      border: none;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      vertical-align: 5%;
+      `;
+
+      removeButton.setAttribute("style", rbStyle);
       entry.appendChild(removeButton);
       list.appendChild(entry);
     }

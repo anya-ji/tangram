@@ -46,14 +46,14 @@
   top: 10%;
   left: 5%;
   right: 5%;
-  bottom: 50%;
+  bottom: 40%;
   align-items: center;
   z-index: 13;
 }
 
 .whole-layout {
   position: fixed;
-  top: 50%;
+  top: 60%;
   left: 0;
   right: 0;
   bottom: 0;
@@ -63,7 +63,7 @@
 
 .piece-layout {
   position: fixed;
-  top: 50%;
+  top: 60%;
   left: 0;
   right: 0;
   bottom: 0;
@@ -93,7 +93,7 @@
   top: 0;
   left: 50%;
   width: auto;
-  bottom: 50%;
+  bottom: 40%;
   right: 0;
   transform: translate(-50%, 0);
 }
@@ -127,30 +127,57 @@
 .output-outer {
   position: fixed;
   top: 10%;
-  left: 60%;
+  left: 62%;
   right: 5%;
-  bottom: 50%;
+  bottom: 20%;
   font-size: 20px;
 }
 
 .piece-description {
-  position: absolute;
+  position: fixed;
   /* top: 0; */
-  left: 2%;
+  left: 62%;
   right: 0;
+  bottom: 90%;
+  font-size: 20px;
+}
+
+.select-description {
+  position: fixed;
+  /* top: 0; */
+  left: 10%;
+  right: 40%;
   bottom: 90%;
   font-size: 20px;
 }
 
 .output {
   position: absolute;
-  top: 10%;
-  left: 2%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40%;
+  font-size: 20px;
+  background-color: #a5dc8659;
+  padding-left: 1vh;
+  padding-right: 1vh;
+  border-radius: 5%;
+}
+
+.whole-result {
+  top: 0;
+  margin-bottom: 1px;
+  margin-left: 2vh;
+  margin-right: 2vh;
+}
+
+.note {
+  position: absolute;
+  top: 60%;
+  left: 0;
   right: 0;
   bottom: 0;
-  font-size: 20px;
-  background-color: lightgray;
-  padding-left: 1vh;
+  font-size: 18px;
 }
 
 .submit {
@@ -189,5 +216,5 @@
 .icon {
   margin-left: 3px;
   height: 15px;
-  vertical-align:middle
+  vertical-align: middle;
 }
