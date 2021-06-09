@@ -9,6 +9,7 @@ var tangramFile = null;
 
 var isPieceTrial = false;
 var wholeAnnotation = "";
+var wholeTimestamp = null;
 var selection = [false, false, false, false, false, false, false];
 var annotated = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "" };
 var ann_to_idx = {}; // maps annotation to list of piece ids

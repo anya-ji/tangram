@@ -60,10 +60,15 @@ next.addEventListener("click", async (e) => {
 
     //annotation
     var uploadData = {};
-    uploadData["whole-annotation"] = wholeAnnotation;
+    uploadData["whole-annotation"] = {
+      wholeAnnotation: wholeAnnotation,
+      timestamp: wholeTimestamp,
+    };
     uploadData["piece-annotation"] = annotated;
     uploadData["metadata"] = metadata;
-    uploadData["timestamp"] = firebase.firestore.Timestamp.now();
+    uploadData["submittedAt"] = firebase.firestore.Timestamp.now();
+    uploadData["assignmentId"] = assignmentId;
+    uploadData["hitId"] = hitId;
     console.log(uploadData);
 
     var updateField = {};
@@ -86,7 +91,6 @@ next.addEventListener("click", async (e) => {
     db.collection("annotations")
       .doc(fileName)
       .set(updateField, { merge: true })
-
       .then(() => {
         db.collection("users")
           .doc(workerId)
@@ -106,7 +110,13 @@ next.addEventListener("click", async (e) => {
               .then(() => {
                 db.collection("assignments")
                   .doc(assignmentId)
-                  .update({ unfinished: false })
+                  .set(
+                    {
+                      unfinished: false,
+                      submittedAt: firebase.firestore.Timestamp.now(),
+                    },
+                    { merge: true }
+                  )
                   .then(async () => {
                     reset();
 

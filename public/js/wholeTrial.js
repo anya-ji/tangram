@@ -22,6 +22,7 @@ bt.addEventListener("click", function (e) {
   var input = text.value.toLowerCase().trim();
   input = input.replace(/[^a-zA-Z0-9,./:'()&~\- ]/g, "");
   wholeAnnotation = input;
+  wholeTimestamp = firebase.firestore.Timestamp.now();
 
   // clear inputs
   text.value = "";
