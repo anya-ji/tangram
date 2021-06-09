@@ -2,7 +2,7 @@
 window.stoppedTyping = function () {
   var text = document.getElementById("annotate");
   var bt = document.getElementById("submit");
-  var ann = text.value.replace(/[^a-zA-Z0-9]/g, ""); // only chars, no space;
+  var ann = text.value.replace(/[^a-zA-Z0-9]/g, ""); // to ensure it has letters or numbers
 
   var annHTML = 'Annotate <img class="icon" src="icons/enter.png">';
   var addHTML = 'Add to Group <img class="icon" src="icons/enter.png">';

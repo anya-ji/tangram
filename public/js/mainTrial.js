@@ -364,7 +364,7 @@ function validSubmit() {
     //submit button
     var bt = document.getElementById("submit");
 
-    var ann = text.value.replace(/[^a-zA-Z0-9]/g, ""); // only chars, no space;
+    var ann = text.value.replace(/[^a-zA-Z0-9]/g, ""); // to ensure it contains letters or numbers
 
     if (ann.length === 0 || selection.every((v) => v === false)) {
       bt.disabled = true;

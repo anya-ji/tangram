@@ -218,7 +218,7 @@ function annotate(ann) {
   // preprocess annotation: lowercase, no special char except space, no leading/trailing space
   if (ann !== "UNKNOWN") {
     ann = ann.toLowerCase().trim();
-    ann = ann.replace(/[^a-zA-Z0-9 ]/g, "");
+    ann = ann.replace(/[^a-zA-Z0-9,./:'()&~\- ]/g, "");
   }
   // Submit button
   var bt = document.getElementById("submit");
@@ -286,13 +286,14 @@ function annotate(ann) {
     if (!old_ann_idx) {
       var list = document.getElementById("list");
       var entry = document.createElement("li");
-      var colorText =
-        color === "deeppink" ? "pink" : color === "gold" ? "yellow" : color;
-      entry.appendChild(
-        document.createTextNode(
-          "The " + colorText + " part is the " + ann + "."
-        )
-      );
+      // var colorText =
+      //   color === "deeppink" ? "pink" : color === "gold" ? "yellow" : color;
+      // entry.appendChild(
+      //   document.createTextNode(
+      //     "The " + colorText + " part is the " + ann + "."
+      //   )
+      // );
+      entry.appendChild(document.createTextNode(ann));
       entry.setAttribute("id", lastid);
       entry.setAttribute("style", "color:" + color);
 

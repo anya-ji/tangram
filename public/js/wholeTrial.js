@@ -20,7 +20,7 @@ var bt = document.getElementById("continue");
 bt.addEventListener("click", function (e) {
   var text = document.getElementById("annotate-whole");
   var input = text.value.toLowerCase().trim();
-  input = input.replace(/[^a-zA-Z0-9 ]/g, "");
+  input = input.replace(/[^a-zA-Z0-9,./:'()&~\- ]/g, "");
   wholeAnnotation = input;
 
   // clear inputs
@@ -45,5 +45,5 @@ bt.addEventListener("click", function (e) {
   document.getElementById("piece").style.display = "block";
   // add whole result
   document.getElementById("whole-result").innerHTML =
-    "Your annnotated parts of shape <b>" + wholeAnnotation + "</b>:";
+    'Your annnotated parts of the shape "<b>' + wholeAnnotation + '</b>":';
 });
