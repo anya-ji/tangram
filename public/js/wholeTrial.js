@@ -44,6 +44,7 @@ bt.addEventListener("click", function (e) {
 
   // show output interface
   document.getElementById("piece").style.display = "block";
+  document.getElementById("next-area").style.display = "block";
   // add whole result
   document.getElementById("whole-result").innerHTML =
     'Your annnotated parts of the shape "<b>' + wholeAnnotation + '</b>":';
