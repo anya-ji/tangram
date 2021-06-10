@@ -31,7 +31,7 @@
 
 .next-area {
   position: fixed;
-  bottom: 10%;
+  bottom: 7%;
   right: 5%;
   display: none;
 }
@@ -40,7 +40,7 @@
   background-color: #4caf50;
   z-index: 10;
   left: 0;
-  bottom: 10%;
+  bottom: 7%;
 }
 
 .next-suggestion {
@@ -164,7 +164,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 40%;
+  bottom: 48%;
   font-size: 20px;
   background-color: #a5dc8659;
   padding-left: 1vh;
@@ -181,7 +181,7 @@
 
 .note {
   position: absolute;
-  top: 60%;
+  top: 52%;
   left: 0;
   right: 0;
   bottom: 0;
@@ -196,10 +196,10 @@
   background-color: #ffb700;
 }
 
-.instructions-bt {
+/* .instructions-bt {
   background-color: #4caf50;
-  display: none; /* hide for block 1*/
-}
+  display: none; 
+} */
 
 .add {
   background-color: #4c7caf;
