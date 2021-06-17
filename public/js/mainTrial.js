@@ -4,6 +4,7 @@ var file = "";
 var assignmentId = "";
 var hitId = "";
 var workerId = "";
+var turkSubmitTo = "";
 var submitted = false;
 var tangramFile = null;
 
@@ -46,6 +47,7 @@ window.onload = function () {
   assignmentId = urlParams.get("assignmentId");
   hitId = urlParams.get("hitId");
   workerId = md5(urlParams.get("workerId"));
+  turkSubmitTo = urlParams.get("turkSubmitTo");
 
   if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
     // MTurk preview
@@ -66,7 +68,7 @@ window.onload = function () {
           var unfinished = data["unfinished"];
           var unfinishedFile = data["file"];
           var lastClaimed = data["lastClaimed"];
-          if (!unfinished || Date.now() - lastClaimed.toMillis() >= 3600000) {
+          if (!unfinished || Date.now() - lastClaimed.toMillis() >= 780000) {
             //doesn't have unfinished or unfinished tangram already expired
             fetchTangram();
           } else {
@@ -129,8 +131,8 @@ function fetchTangram() {
     .where(
       "lastClaimed",
       "<=",
-      firebase.firestore.Timestamp.fromMillis(Date.now() - 3600000)
-    ) // claimed an hour ago
+      firebase.firestore.Timestamp.fromMillis(Date.now() - 780000)
+    ) // claimed 13 mins ago, expired
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -147,39 +149,52 @@ function fetchTangram() {
         .where("available", "==", true)
         .get()
         .then((querySnapshot) => {
-          // worker hasn't done this tangram
+          // worker hasn't done/claimed this tangram
           const doc = querySnapshot.docs.find(
-            (d) => !d.data()["completedWorkers"].includes(workerId)
+            (d) =>
+              !d.data()["completedWorkers"].includes(workerId) &&
+              !d.data()["claimedWorkers"].includes(workerId)
           );
-          file = doc.id;
-          filesRef
-            .doc(file)
-            .set(
-              {
-                available: false,
-                lastClaimed: firebase.firestore.Timestamp.now(),
-              },
-              { merge: true }
-            )
-            .then(() => {
-              //add to unfinished assignments
-              db.collection("assignments")
-                .doc(assignmentId)
-                .set(
-                  {
-                    unfinished: true,
-                    file: file,
-                    lastClaimed: firebase.firestore.Timestamp.now(),
-                    workerId: workerId,
-                  },
-                  { merge: true }
-                )
-                .then(() => {
-                  console.log("Tangram: ", file);
-                  //start trial
-                  startTrial(file);
-                });
-            });
+
+          if (querySnapshot.docs === [] || doc === undefined) {
+            // no available
+            // or worker has done all available ones
+            alert(
+              "No available tangrams. Please wait for a few minutes and refresh."
+            );
+          } else {
+            // claim new tangram
+            file = doc.id;
+            filesRef
+              .doc(file)
+              .set(
+                {
+                  available: false,
+                  lastClaimed: firebase.firestore.Timestamp.now(),
+                  claimedWorkers: firebase.firestore.FieldValue.arrayUnion(workerId)
+                },
+                { merge: true }
+              )
+              .then(() => {
+                //add to unfinished assignments
+                db.collection("assignments")
+                  .doc(assignmentId)
+                  .set(
+                    {
+                      unfinished: true,
+                      file: file,
+                      lastClaimed: firebase.firestore.Timestamp.now(),
+                      workerId: workerId,
+                    },
+                    { merge: true }
+                  )
+                  .then(() => {
+                    console.log("Tangram: ", file);
+                    //start trial
+                    startTrial(file);
+                  });
+              });
+          }
         })
         .catch((error) => {
           console.log("Error getting tangram ", error);

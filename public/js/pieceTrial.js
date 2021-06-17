@@ -87,6 +87,7 @@ next.addEventListener("click", async (e) => {
     //3. add to user's annotations
     //4. update assignment status
 
+    var feedbackText = "";
     //firebase
     db.collection("annotations")
       .doc(fileName)
@@ -114,85 +115,90 @@ next.addEventListener("click", async (e) => {
                     {
                       unfinished: false,
                       submittedAt: firebase.firestore.Timestamp.now(),
+                      sandbox:
+                        turkSubmitTo === null
+                          ? null
+                          : turkSubmitTo.includes("sandbox"),
                     },
                     { merge: true }
                   )
-                  .then(async () => {
-                    reset();
+                  .then(() => {
+                    db.collection("counts")
+                      .doc("counts")
+                      .update({
+                        [fileName]: firebase.firestore.FieldValue.increment(1),
+                      })
+                      .then(async () => {
+                        reset();
 
-                    const { value: text } = await Swal.fire({
-                      title: "<strong>Annotations submitted!</strong>",
-                      icon: "success",
-                      html: 'Thank you for completing the task!<textarea id="swal-input1" class="swal2-input" rows="4" style="font-family: Times, serif; padding-top: 1px;" placeholder="(Optional) Enter your feedback...">',
-                      confirmButtonText: "Submit",
-                      confirmButtonColor: "#4caf50",
-                      preConfirm: () => {
-                        return document.getElementById("swal-input1").value;
-                      },
-                      showCancelButton: false,
-                      showCloseButton: false,
-                      focusConfirm: true,
-                      showConfirmButton: true,
-                      allowOutsideClick: false,
-                      allowEscapeKey: false,
-                      allowEnterKey: true,
-                    });
+                        const { value: text } = await Swal.fire({
+                          title: "<strong>Annotations submitted!</strong>",
+                          icon: "success",
+                          html: 'Thank you for completing the task!<textarea id="swal-input1" class="swal2-input" rows="4" style="font-family: Times, serif; padding-top: 1px;" placeholder="(Optional) Enter your feedback...">',
+                          confirmButtonText: "Submit",
+                          confirmButtonColor: "#4caf50",
+                          preConfirm: () => {
+                            return document.getElementById("swal-input1").value;
+                          },
+                          showCancelButton: false,
+                          showCloseButton: false,
+                          focusConfirm: true,
+                          showConfirmButton: true,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false,
+                          allowEnterKey: true,
+                        });
 
-                    //MTurk submit
-                    if (hitId) {
-                      const urlParams = new URLSearchParams(
-                        window.location.search
-                      );
+                        feedbackText = text;
 
-                      // create the form element and point it to the correct endpoint
-                      const form = document.createElement("form");
-                      form.action = new URL(
-                        "mturk/externalSubmit",
-                        urlParams.get("turkSubmitTo")
-                      ).href;
-                      form.method = "post";
+                        db.collection("assignments")
+                          .doc(assignmentId)
+                          .update({
+                            feedback: text,
+                          })
+                          .then(() => {
+                            //MTurk submit
+                            const urlParams = new URLSearchParams(
+                              window.location.search
+                            );
 
-                      // attach the assignmentId
-                      const inputAssignmentId = document.createElement("input");
-                      inputAssignmentId.name = "assignmentId";
-                      inputAssignmentId.value = urlParams.get("assignmentId");
-                      inputAssignmentId.hidden = true;
-                      form.appendChild(inputAssignmentId);
+                            // create the form element and point it to the correct endpoint
+                            const form = document.createElement("form");
+                            form.action = new URL(
+                              "mturk/externalSubmit",
+                              urlParams.get("turkSubmitTo")
+                            ).href;
+                            form.method = "post";
 
-                      // need one additional field asside from assignmentId
-                      const inputFeedback = document.createElement("input");
-                      inputFeedback.name = "feedback";
-                      inputFeedback.value = text;
-                      inputFeedback.hidden = true;
-                      form.appendChild(inputFeedback);
+                            // attach the assignmentId
+                            const inputAssignmentId =
+                              document.createElement("input");
+                            inputAssignmentId.name = "assignmentId";
+                            inputAssignmentId.value =
+                              urlParams.get("assignmentId");
+                            inputAssignmentId.hidden = true;
+                            form.appendChild(inputAssignmentId);
 
-                      // attach the form to the HTML document and trigger submission
-                      document.body.appendChild(form);
-                      form.submit();
-                    }
+                            // need one additional field asside from assignmentId
+                            const inputFeedback =
+                              document.createElement("input");
+                            inputFeedback.name = "feedback";
+                            inputFeedback.value = feedbackText;
+                            inputFeedback.hidden = true;
+                            form.appendChild(inputFeedback);
 
-                    //new tangram
-                    // db.collection("files")
-                    //   .orderBy("count")
-                    //   .limit(1)
-                    //   .get()
-                    //   .then((querySnapshot) => {
-                    //     querySnapshot.forEach((doc) => {
-                    //       console.log("Next tangram: ", doc.id);
-                    //       // hide output interface
-                    //       document.getElementById("piece").style.display = "none";
-                    //       //set url
-                    //       var url = window.location.href;
-                    //       separator = url.indexOf("=");
-                    //       newUrl = url.substring(0, separator + 1) + doc.id;
-                    //       window.location.href = newUrl;
-                    //       //start new trial
-                    //       startTrial(doc.id);
-                    //     });
-                    //   })
-                    //   .catch((error) => {
-                    //     console.log("Error getting documents: ", error);
-                    //   });
+                            // copy of database data
+                            const inputData = document.createElement("input");
+                            inputData.name = "data";
+                            inputData.value = JSON.stringify(uploadData);
+                            inputData.hidden = true;
+                            form.appendChild(inputData);
+
+                            // attach the form to the HTML document and trigger submission
+                            document.body.appendChild(form);
+                            form.submit();
+                          });
+                      });
                   });
               })
               .catch((error) => {
