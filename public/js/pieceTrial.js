@@ -69,6 +69,7 @@ next.addEventListener("click", async (e) => {
     uploadData["submittedAt"] = firebase.firestore.Timestamp.now();
     uploadData["assignmentId"] = assignmentId;
     uploadData["hitId"] = hitId;
+    uploadData["version"] = "pilot2";
     console.log(uploadData);
 
     var updateField = {};

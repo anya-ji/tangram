@@ -16,7 +16,7 @@ db = firestore.client()
 
 mypath = '../public/assets/'
 
-files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+files = [f for f in listdir(mypath) if isfile(join(mypath, f))][:20]
 # print(files)
 
 # initial_files = {}
@@ -30,7 +30,9 @@ for f in files:
       'count': 0,
       'available': True,
       'lastClaimed': datetime.datetime.now(),
-      'completedWorkers': []
+      'completedWorkers': [],
+      'claimedWorkers': []
     })
+    
     print(i,":",f)
     i+=1

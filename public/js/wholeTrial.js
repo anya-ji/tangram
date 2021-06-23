@@ -1,8 +1,11 @@
 /** BLOCK 1: WHOLE TANGRAM ANNOTATION */
 function wholeTrial() {
+  // hide questionnaire
+  document.getElementById("question-layout").style.display = "none";
   // hide next
   document.getElementById("next-area").style.display = "none";
   //show output interface
+  document.getElementById("left-cover").style.display = "none";
   document.getElementById("whole").style.display = "block";
   //auto focus on text input
   document.getElementById("annotate-whole").focus();
