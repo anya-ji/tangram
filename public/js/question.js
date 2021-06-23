@@ -11,7 +11,7 @@ window.addLanguage = function () {
   entry.style.margin = "12px";
 
   entry.innerHTML = `
-    <select id="languages" name="languages" class="languages${languageCount}" style="width:200px;">
+    <select id="languages${languageCount}" name="languages${languageCount}" class="languages${languageCount}" style="width:250px;" onchange="otherLanguage(this)">
       <option disabled selected value>-- select a language --</option>
       <option value="af">Afrikaans</option>
       <option value="sq">Albanian - shqip</option>
@@ -155,7 +155,9 @@ window.addLanguage = function () {
       <option value="yi">Yiddish</option>
       <option value="yo">Yoruba - Èdè Yorùbá</option>
       <option value="zu">Zulu - isiZulu</option>
+      <option value="other">Other - please specify</option>
   </select>
+  <input type="text" id="other-lang${languageCount}" class="other-input"></input>
   <label style="margin-left:5%;">Proficiency:</label>
   <input type="radio" id="q4" name=${languageCount} value="1" class="p1-${languageCount}"><label for="1">1</label>
   <input type="radio" id="q4" name=${languageCount} value="2" class="p2-${languageCount}"><label for="2">2</label>
@@ -218,14 +220,37 @@ function question() {
 /** Submit questionnaire. */
 window.submitQuestion = function () {
   if (checkFields()) {
+    //q1
     languages["english"] = {
       language: document.getElementById("english").value,
       proficiency: document.querySelector('input[name="q1"]:checked').value,
     };
+    if (document.getElementById("english").value == "en-OT") {
+      languages["english"]["specify"] =
+        document.getElementById("other-eng").value;
+    }
+    //other option specify
+    for (const l in languages) {
+      if (l != "english") {
+        //l=lang#
+        if (languages[l]["language"] == "other") {
+          var id = l.replace("lang", "");
+          languages[l]["specify"] = document.getElementById(
+            "other-lang" + id
+          ).value;
+        }
+      }
+    }
+
+    //q2
     engFirst =
       document.querySelector('input[name="q2"]:checked').value == "yes";
-    whereLearn = document.getElementById("country").value;
 
+    //q3
+    whereLearn = document.getElementById("country").value;
+    console.log(languages);
+
+    //upload
     if (assignmentId && workerId && hitId) {
       db.collection("users")
         .doc(workerId)
@@ -239,6 +264,26 @@ window.submitQuestion = function () {
           wholeTrial();
         });
     }
+  }
+};
+
+/** Show other english input. */
+window.otherEnglish = function (that) {
+  if (that.value == "en-OT") {
+    document.getElementById("other-eng").style.display = "inline";
+  } else {
+    document.getElementById("other-eng").style.display = "none";
+  }
+};
+
+/** Show other language input. */
+window.otherLanguage = function (that) {
+  var id = that.id.replace("languages", "");
+
+  if (that.value == "other") {
+    document.getElementById("other-lang" + id).style.display = "inline";
+  } else {
+    document.getElementById("other-lang" + id).style.display = "none";
   }
 };
 
@@ -257,6 +302,14 @@ function checkFields() {
       alert("Missing language or proficiency.");
       return false;
     }
+    var id = l.replace("lang", "");
+    if (
+      languages[l]["language"] == "other" &&
+      !document.getElementById("other-lang" + id).value
+    ) {
+      alert("Please specify your language.");
+      return false;
+    }
   }
   if (!document.querySelector('input[name="q2"]:checked')) {
     alert("Please indicate if English is your first language.");
@@ -264,6 +317,13 @@ function checkFields() {
   }
   if (!document.getElementById("country").value) {
     alert("Please select the country where you first learned English.");
+    return false;
+  }
+  if (
+    document.getElementById("english").value == "en-OT" &&
+    !document.getElementById("other-eng").value
+  ) {
+    alert("Please specify your variant of English.");
     return false;
   }
   return true;

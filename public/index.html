@@ -49,14 +49,14 @@
     </div>
 
     <div id="question-layout" class="question-layout">
-      <p> <strong>Since it's the first time you take this task, we would like you to fill out a bit more information:</strong> <br/>
-        (Your response will not affect your qualification or the acceptance your assignment.)</p>
-       
-          <label for="q1">1. What languages do you know? How would you rate your proficiency in each language? (1=basic knowledge, 5=native)</label><br>
+      <p> <strong>This is your first time doing this task! We want to know a bit more about the language you speak. 
+        Your response will not affect your qualification or the acceptance your assignment.
+      </strong> </p>
+          <label for="q1">1.  What languages do you know? How would you rate your proficiency in each language? (1=basic knowledge, 5=native speaker level)</label><br>
           <ul id="lang-list" class="lang-list">
             <li style="margin:12px;">
-              <select id="english" class="english" style="width:200px;">
-                <option disabled selected value>-- select a type of English --</option>
+              <select id="english" class="english" style="width:250px;" onchange="otherEnglish(this)">
+                <option disabled selected value>--- select your variant of English ---</option>
                 <option value="en-AU">English (Australia)</option>
                 <option value="en-CA">English (Canada)</option>
                 <option value="en-IN">English (India)</option>
@@ -64,7 +64,9 @@
                 <option value="en-ZA">English (South Africa)</option>
                 <option value="en-GB">English (United Kingdom)</option>
                 <option value="en-US">English (United States)</option>
+                <option value="en-OT">English (Other) - please specify</option>
               </select>
+              <input type="text" id="other-eng" class="other-input"></input>
               <label style="margin-left:5%;">Proficiency:</label>
               <input type="radio" id="q1" name="q1" value="1"><label for="1">1</label>
               <input type="radio" id="q1" name="q1" value="2"><label for="2">2</label>
@@ -81,7 +83,7 @@
           <input type="radio" id="q2" name="q2" value="no"><label for="no">No</label>
           <br><br>
 
-          <label for="q3">3. Where did you learn English?</label>
+          <label for="q3">3. Where did you learn English? (If you are a native speaker, please select the country where you learned to speak.)</label>
           <select id="country" name="country">
             <option disabled selected value> -- select a country -- </option>
             <option value="Afganistan">Afghanistan</option>
@@ -332,9 +334,8 @@
             <option value="Zimbabwe">Zimbabwe</option>
          </select>
         <br><br>
-       
 
-        <button class="btn-language submit" onclick="submitQuestion()"">Submit and go to task</button>
+        <button class="btn-language submit" onclick="submitQuestion()">Submit and continue to the task</button>
     </div>
 
     <div class="whole-layout" id="whole">

@@ -82,6 +82,7 @@
   font-size: 18px;
   display: none;
   background-color: #ffffff;
+  width: 70%;
 }
 
 .btn-language {
@@ -93,6 +94,12 @@
   font-size: 15px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+.other-input {
+  font-size: 15px;
+  width: 150px;
+  display: none;
 }
 
 .whole-layout {
