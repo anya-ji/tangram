@@ -69,7 +69,9 @@ next.addEventListener("click", async (e) => {
     uploadData["submittedAt"] = firebase.firestore.Timestamp.now();
     uploadData["assignmentId"] = assignmentId;
     uploadData["hitId"] = hitId;
-    uploadData["version"] = "pilot2";
+    uploadData["version"] = version;
+    uploadData["workerId"] = workerId;
+    uploadData["fileName"] = fileName;
     console.log(uploadData);
 
     var updateField = {};
@@ -120,6 +122,7 @@ next.addEventListener("click", async (e) => {
                         turkSubmitTo === null
                           ? null
                           : turkSubmitTo.includes("sandbox"),
+                      version: version,
                     },
                     { merge: true }
                   )
@@ -243,6 +246,9 @@ function annotate(ann) {
   var idk = document.getElementById("idk");
 
   if (!selection.every((v) => v === false)) {
+    // bad annotations reminder
+    reminders(selection, ann);
+
     //selected pieces
     var indices = selection.reduce(
       (out, bool, index) => (bool ? out.concat(index + 1) : out),
@@ -290,6 +296,8 @@ function annotate(ann) {
       // record last operation
       piece_to_last_id[id] = lastid;
     }
+
+    allSameReminder();
 
     // save metadata
     metadata[lastid] = {

@@ -1,3 +1,9 @@
+// *** check / change before each run!
+var version = "batch2";
+var expiringTime = 780000; // hit duration
+var coolDownTime = 300000; // time from last claimed, to prevent all claiming the same tangram before count gets incremented
+// *** end
+
 var db = firebase.firestore();
 var storageRef = firebase.storage().ref();
 var file = "";
@@ -44,22 +50,25 @@ window.onload = function () {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   tangramFile = urlParams.get("tangram");
-  assignmentId = urlParams.get("assignmentId");
   hitId = urlParams.get("hitId");
   workerId = md5(urlParams.get("workerId"));
   turkSubmitTo = urlParams.get("turkSubmitTo");
+  assignmentId = urlParams.get("assignmentId");
 
   if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
     // MTurk preview
     document.getElementById("preview").style.display = "block";
-    console.log("Tangram: ", "page1-44.svg");
+    console.log("Tangram: ", "a.svg");
     //start trial
-    startTrial("page1-44.svg");
+    startTrial("a.svg");
   } else if (assignmentId && workerId && hitId) {
     // actual workers
     // check if the worker has unfinished work
-    const assignmentRef = db.collection("assignments").doc(assignmentId);
 
+    // make unique assignment ID
+    assignmentId = urlParams.get("assignmentId") + "-" + workerId;
+
+    const assignmentRef = db.collection("assignments").doc(assignmentId);
     assignmentRef.get().then((docSnapshot) => {
       if (docSnapshot.exists) {
         // has claimed unfinished tangram
@@ -68,7 +77,10 @@ window.onload = function () {
           var unfinished = data["unfinished"];
           var unfinishedFile = data["file"];
           var lastClaimed = data["lastClaimed"];
-          if (!unfinished || Date.now() - lastClaimed.toMillis() >= 780000) {
+          if (
+            !unfinished ||
+            Date.now() - lastClaimed.toMillis() >= expiringTime
+          ) {
             //doesn't have unfinished or unfinished tangram already expired
             fetchTangram();
           } else {
@@ -84,7 +96,6 @@ window.onload = function () {
       }
     });
   } else if (tangramFile) {
-    // ** for testing specific tangram UI
     // has tangram in url
     // fetch requested tangram
     db.collection("files")
@@ -104,22 +115,8 @@ window.onload = function () {
       });
   } else {
     // ** for testing
-    // random tangram
-    startTrial("page1-44.svg");
-    // db.collection("files")
-    //   .orderBy("count")
-    //   .limit(1)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       console.log("Tangram: ", doc.id);
-    //       //start trial
-    //       startTrial(doc.id);
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error getting documents: ", error);
-    //   });
+    // demo tangram
+    startTrial("a.svg");
   }
 };
 
@@ -127,13 +124,14 @@ window.onload = function () {
 function fetchTangram() {
   // update availability of expired claimed tangram sessions to true
   const filesRef = db.collection("files");
+  const userDoc = db.collection("users").doc(workerId);
   filesRef
     .where("available", "==", false)
     .where(
       "lastClaimed",
       "<=",
-      firebase.firestore.Timestamp.fromMillis(Date.now() - 60000)
-    ) // claimed 1 mins ago
+      firebase.firestore.Timestamp.fromMillis(Date.now() - coolDownTime)
+    ) // claimed 5 mins ago
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -145,57 +143,138 @@ function fetchTangram() {
     })
     .then(() => {
       //claim the least annotated and available tangram
-      filesRef
-        .orderBy("count")
-        .where("available", "==", true)
+      userDoc
         .get()
-        .then((querySnapshot) => {
-          // worker hasn't done/claimed this tangram
-          const doc = querySnapshot.docs.find(
-            (d) =>
-              !d.data()["completedWorkers"].includes(workerId) &&
-              !d.data()["claimedWorkers"].includes(workerId)
-          );
+        .then((doc) => {
+          if (doc.exists) {
+            // EXISTING USER
+            var workerClaimed = doc
+              .data()
+              ["claimed"].map((e) => e.replace(".svg", ""));
 
-          if (querySnapshot.docs === [] || doc === undefined) {
-            // no available
-            // or worker has done all available ones
-            alert(
-              "No available tangrams. Please wait for a few minutes and refresh."
-            );
-          } else {
-            // claim new tangram
-            file = doc.id;
             filesRef
-              .doc(file)
-              .set(
-                {
-                  available: false,
-                  lastClaimed: firebase.firestore.Timestamp.now(),
-                  claimedWorkers:
-                    firebase.firestore.FieldValue.arrayUnion(workerId),
-                },
-                { merge: true }
-              )
-              .then(() => {
-                //add to unfinished assignments
-                db.collection("assignments")
-                  .doc(assignmentId)
-                  .set(
-                    {
-                      unfinished: true,
-                      file: file,
-                      lastClaimed: firebase.firestore.Timestamp.now(),
-                      workerId: workerId,
-                      version: "pilot2",
-                    },
-                    { merge: true }
-                  )
-                  .then(() => {
-                    console.log("Tangram: ", file);
-                    //start trial
-                    startTrial(file);
-                  });
+              .orderBy("count")
+              .where("available", "==", true)
+              .where("name", "not-in", workerClaimed)
+              .limit(1)
+              .get()
+              .then((querySnapshot) => {
+                // worker hasn't done/claimed this tangram
+                if (querySnapshot.empty) {
+                  // no available
+                  // or worker has done all available ones
+                  alert(
+                    `No available tangrams. Please wait for a few minutes and refresh. 
+                    If you have done all 1005 tangrams, please return the assignment.`
+                  );
+                } else {
+                  // claim new tangram
+                  const doc = querySnapshot.docs[0].data();
+
+                  file = doc.name + ".svg";
+                  filesRef
+                    .doc(file)
+                    .set(
+                      {
+                        available: false,
+                        lastClaimed: firebase.firestore.Timestamp.now(),
+                        claimedWorkers:
+                          firebase.firestore.FieldValue.arrayUnion(workerId),
+                      },
+                      { merge: true }
+                    )
+                    .then(() => {
+                      //add to unfinished assignments
+                      db.collection("assignments")
+                        .doc(assignmentId)
+                        .set(
+                          {
+                            unfinished: true,
+                            file: file,
+                            lastClaimed: firebase.firestore.Timestamp.now(),
+                            workerId: workerId,
+                            version: version,
+                          },
+                          { merge: true }
+                        )
+                        .then(() => {
+                          // add to claimed
+                          userDoc
+                            .update({
+                              claimed:
+                                firebase.firestore.FieldValue.arrayUnion(file),
+                            })
+                            .then(() => {
+                              console.log("Tangram: ", file);
+                              //start trial
+                              startTrial(file);
+                            });
+                        });
+                    });
+                }
+              });
+          } else {
+            // FIRST TIME USER -- user doesn't exist
+            filesRef
+              .orderBy("count")
+              .where("available", "==", true)
+              .limit(1)
+              .get()
+              .then((querySnapshot) => {
+                // worker hasn't done/claimed this tangram
+                if (querySnapshot.empty) {
+                  // no available
+                  // or worker has done all available ones
+                  alert(
+                    "No available tangrams. Please wait for a few minutes and refresh."
+                  );
+                } else {
+                  // claim new tangram
+                  const doc = querySnapshot.docs[0].data();
+
+                  file = doc.name + ".svg";
+                  filesRef
+                    .doc(file)
+                    .set(
+                      {
+                        available: false,
+                        lastClaimed: firebase.firestore.Timestamp.now(),
+                        claimedWorkers:
+                          firebase.firestore.FieldValue.arrayUnion(workerId),
+                      },
+                      { merge: true }
+                    )
+                    .then(() => {
+                      //add to unfinished assignments
+                      db.collection("assignments")
+                        .doc(assignmentId)
+                        .set(
+                          {
+                            unfinished: true,
+                            file: file,
+                            lastClaimed: firebase.firestore.Timestamp.now(),
+                            workerId: workerId,
+                            version: version,
+                          },
+                          { merge: true }
+                        )
+                        .then(() => {
+                          // FIRST TIME set in userDoc
+                          userDoc
+                            .set(
+                              {
+                                claimed: [file],
+                              },
+                              { merge: true }
+                            )
+                            .then(() => {
+                              console.log("Tangram: ", file);
+                              //start trial
+                              startTrial(file);
+                            });
+                        });
+                    });
+                }
               });
           }
         })
@@ -311,10 +390,9 @@ function startTrial(id) {
       },
       false
     );
-
     if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
       wholeTrial();
-    } else {
+    } else if (assignmentId && workerId && hitId) {
       db.collection("users")
         .doc(workerId)
         .get()
@@ -334,6 +412,8 @@ function startTrial(id) {
             question();
           }
         });
+    } else {
+      wholeTrial();
     }
   };
 }
