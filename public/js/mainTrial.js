@@ -116,7 +116,8 @@ window.onload = function () {
   } else {
     // ** for testing
     // demo tangram
-    startTrial("a.svg");
+    question()
+    // startTrial("a.svg");
   }
 };
 
@@ -148,30 +149,44 @@ function fetchTangram() {
         .then((doc) => {
           if (doc.exists) {
             // EXISTING USER
-            var workerClaimed = doc
-              .data()
-              ["claimed"].map((e) => e.replace(".svg", ""));
+            var d = doc.data()["assignmentId"].length;
+
+            if (d >= 200) {
+              alert(
+                `You have reached the upper limit of 200 tangrams. Please return the assignment and we'll deactivate your qualification soon only because you have reached the upper limit. Thank you for completing the tasks!`
+              );
+              return;
+            }
+            if (d >= 195) {
+              alert(
+                `You have done over 195 annotations and you are about to reach the upper limit of 200 tangrams. We'll deactivate your qualification after you have done 200 only because that's the upper limit of tangrams we'd like you to annotate. Click "OK" to continue the task.`
+              );
+            }
 
             filesRef
               .orderBy("count")
               .where("available", "==", true)
-              .where("name", "not-in", workerClaimed)
-              .limit(1)
+              .limit(d+1)
               .get()
               .then((querySnapshot) => {
                 // worker hasn't done/claimed this tangram
-                if (querySnapshot.empty) {
+                console.log(querySnapshot.docs.length)
+                const doc = querySnapshot.docs.find(
+                  (d) =>
+                    !d.data()["completedWorkers"].includes(workerId) &&
+                    !d.data()["claimedWorkers"].includes(workerId)
+                );
+
+                if (querySnapshot.docs === [] || doc === undefined) {
                   // no available
                   // or worker has done all available ones
                   alert(
-                    `No available tangrams. Please wait for a few minutes and refresh. 
-                    If you have done all 1005 tangrams, please return the assignment.`
+                    "No available tangrams. Please wait for a few minutes and refresh."
                   );
                 } else {
                   // claim new tangram
-                  const doc = querySnapshot.docs[0].data();
+                  file = doc.id;
 
-                  file = doc.name + ".svg";
                   filesRef
                     .doc(file)
                     .set(
